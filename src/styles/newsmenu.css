@@ -1,0 +1,93 @@
+/* ---------- News categories panel, opened from the News item ---------- */
+
+/* The little arrow in the corner of the News item: opens the panel from the keyboard */
+.newsmenu__chev {
+  position: absolute;
+  z-index: 3;
+  top: 50%;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-top: -12px;
+  border-radius: 50%;
+  color: rgba(255, 255, 255, 0.6);
+  transition: background var(--dur-fast), color var(--dur-fast), transform 0.3s var(--ease);
+}
+.newsmenu__chev:hover { background: rgba(255, 255, 255, 0.14); color: var(--white); }
+.newsmenu__chev[aria-expanded="true"] { transform: rotate(180deg); }
+
+/* The panel matches the bar: solid dark blue */
+.newsmenu__panel {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 18px);
+  left: 50%;
+  width: 440px;
+  border-radius: 22px;
+  background: var(--nav-base);
+  color: var(--white);
+  box-shadow: 0 24px 60px rgba(4, 10, 36, 0.45);
+  transform: translate(-50%, -8px) scale(0.97);
+  transform-origin: top center;
+  visibility: hidden;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), visibility 0s linear 0.4s;
+}
+.newsmenu__panel.is-open { transform: translate(-50%, 0); visibility: visible; transition-delay: 0s; }
+/* Keeps the panel open while the pointer crosses the gap between the item and the panel */
+.newsmenu__panel::before { content: ""; position: absolute; left: 0; right: 0; top: -20px; height: 20px; }
+
+.newsmenu__inner { padding: 1rem 1rem 0.9rem; }
+.newsmenu__label {
+  margin: 0 0 0.5rem 0.4rem;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+.newsmenu__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.2rem; }
+.newsmenu__item {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.6rem;
+  border-radius: 14px;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  transition: background var(--dur-fast);
+}
+.newsmenu__item:hover,
+.newsmenu__item:focus-visible { background: rgba(255, 255, 255, 0.1); }
+.newsmenu__name { flex: 1; }
+.newsmenu__count { font-size: var(--text-xs); font-weight: 600; color: rgba(255, 255, 255, 0.55); font-variant-numeric: tabular-nums; }
+.newsmenu__dot { flex: none; width: 22px; height: 22px; border-radius: 8px; }
+.newsmenu__dot--politics { background: linear-gradient(135deg, #1559e6, #081f55); }
+.newsmenu__dot--business { background: linear-gradient(135deg, #0a6cc4, #08305f); }
+.newsmenu__dot--sports { background: linear-gradient(135deg, #2f78ff, #0b2a7a); }
+.newsmenu__dot--entertainment { background: linear-gradient(135deg, #6a46e0, #241a77); }
+.newsmenu__dot--technology { background: linear-gradient(135deg, #0f86c9, #0a3b66); }
+.newsmenu__dot--health { background: linear-gradient(135deg, #0a95a8, #084a63); }
+.newsmenu__dot--world { background: linear-gradient(135deg, #3a5ce0, #13237a); }
+.newsmenu__dot--local { background: linear-gradient(135deg, #4a8bff, #0f43b3); }
+
+.newsmenu__all {
+  display: block;
+  margin: 0.5rem 0.3rem 0;
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-pill);
+  background: var(--blue-500);
+  color: var(--white);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  text-align: center;
+  transition: background var(--dur-fast);
+}
+.newsmenu__all:hover { background: var(--blue-400); }
+
+/* Phones have the category chips on the News page instead */
+@media (max-width: 860px) {
+  .newsmenu__chev,
+  .newsmenu__panel { display: none; }
+}

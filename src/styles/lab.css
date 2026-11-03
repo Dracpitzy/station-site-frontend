@@ -1,0 +1,100 @@
+/* Test card for checking that the glass really bends what is behind it */
+.lab {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  color: #fff;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.2) 0 2px, transparent 2px 48px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.2) 0 2px, transparent 2px 48px),
+    radial-gradient(circle at 18% 28%, #ff5ea8 0, transparent 36%),
+    radial-gradient(circle at 82% 22%, #ffd23f 0, transparent 32%),
+    radial-gradient(circle at 72% 82%, #19d3a2 0, transparent 38%),
+    linear-gradient(135deg, #0f43b3, #081f55);
+}
+
+.lab__intro {
+  position: relative;
+  z-index: 1;
+  padding-top: calc(var(--nav-h) + 2.5rem);
+  max-width: 34rem;
+}
+.lab__intro h1 { font-size: var(--text-2xl); }
+.lab__intro p { margin-top: 0.5rem; opacity: 0.9; }
+.lab__mode {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.lab__word {
+  position: absolute;
+  font-weight: 800;
+  font-size: clamp(3rem, 13vw, 10rem);
+  letter-spacing: -0.04em;
+  line-height: 1;
+  user-select: none;
+  pointer-events: none;
+}
+.lab__dot {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+}
+.lab__bar {
+  position: absolute;
+  pointer-events: none;
+}
+
+.lab .lab__lens {
+  position: absolute;
+  z-index: 3;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.lab .lab__lens:active { cursor: grabbing; }
+.lab__label {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 0 1rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.lab__tuner {
+  position: absolute;
+  z-index: 5;
+  left: 1rem;
+  bottom: 1rem;
+  width: min(320px, calc(100% - 2rem));
+  padding: 0.9rem 1rem;
+  border-radius: 20px;
+  background: rgba(8, 31, 85, 0.82);
+  font-size: var(--text-sm);
+}
+.lab__tuner summary { cursor: pointer; font-weight: 700; }
+.lab__tuner label {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr 2.8rem;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+.lab__tuner input[type="range"] { width: 100%; }
+.lab__tuner output { text-align: right; font-variant-numeric: tabular-nums; }
+.lab__tuner pre {
+  margin-top: 0.7rem;
+  padding: 0.6rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  font-size: 0.75rem;
+  white-space: pre-wrap;
+  user-select: all;
+}
+.lab .lab__lens .lg__content { height: 100%; }

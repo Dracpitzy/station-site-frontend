@@ -1,0 +1,11 @@
+/* ---------- Page title at the top of a page ---------- */
+.pagehead { padding-top: 1.6rem; padding-bottom: 0.4rem; }
+.pagehead__eyebrow {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--blue-600);
+}
+.pagehead__title { margin-top: 0.25rem; font-size: var(--text-2xl); }
+.pagehead__lede { margin-top: 0.4rem; max-width: 56ch; color: var(--ink-soft); }

@@ -1,0 +1,61 @@
+// Starting points, not fixed values. Tune them on the /lab page against real backgrounds.
+// thickness and bezel are in px, blur is the SVG blur in px, specular / tint / shadow run 0 to 1.
+const base = { saturation: 3, scaleRatio: 1 };
+
+export const presets = {
+  navbar: {
+    ...base,
+    radius: "pill",
+    thickness: 35,
+    bezel: 28,
+    ior: 2.2,
+    blur: 1.2,
+    specular: 0.4,
+    tint: 0.04,
+    shadow: 0.3,
+  },
+  button: {
+    ...base,
+    radius: "pill",
+    thickness: 25,
+    bezel: 18,
+    ior: 2.1,
+    blur: 0.8,
+    specular: 0.35,
+    tint: 0.04,
+    shadow: 0.25,
+  },
+  player: {
+    ...base,
+    radius: 36,
+    thickness: 55,
+    bezel: 40,
+    ior: 2.6,
+    blur: 1.5,
+    specular: 0.55,
+    tint: 0.06,
+    shadow: 0.45,
+  },
+  floatingPlayer: {
+    ...base,
+    radius: 36,
+    thickness: 65,
+    bezel: 45,
+    ior: 2.8,
+    blur: 1.5,
+    specular: 0.65,
+    tint: 0.055,
+    shadow: 0.5,
+  },
+  modal: {
+    ...base,
+    radius: 40,
+    thickness: 45,
+    bezel: 35,
+    ior: 2.4,
+    blur: 2,
+    specular: 0.45,
+    tint: 0.07,
+    shadow: 0.45,
+  },
+};

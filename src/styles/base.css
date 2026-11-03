@@ -1,0 +1,82 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, video { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+ul { list-style: none; }
+
+h1, h2, h3, h4 { line-height: 1.12; letter-spacing: -0.02em; font-weight: 700; }
+h1 { font-size: var(--text-3xl); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
+
+.container {
+  width: min(100% - 2.5rem, var(--container));
+  margin-inline: auto;
+}
+
+/* Wherever the side rail can appear, content never starts underneath it.
+   It stays centred whenever the screen is wide enough to leave room on both sides. */
+@media (min-width: 861px) {
+  .container {
+    width: min(100% - var(--rail-gutter) - 1.25rem, var(--container));
+    margin-left: max(var(--rail-gutter), calc((100% - var(--container)) / 2));
+    margin-right: auto;
+  }
+}
+
+.section { padding-block: var(--space-8); }
+.section--tint { background: var(--blue-50); }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.85rem 1.6rem;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.btn:active { transform: scale(0.97); }
+
+.btn--primary {
+  color: var(--white);
+  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+  box-shadow: 0 8px 24px rgba(21, 89, 230, 0.35);
+}
+.btn--primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(21, 89, 230, 0.45); }
+
+.btn--soft { color: var(--blue-700); background: var(--blue-100); }
+.btn--soft:hover { background: var(--blue-200); }
+
+/* Keyboard focus only, so mouse users see no outlines */
+:focus-visible { outline: 3px solid var(--blue-400); outline-offset: 3px; }
+
+/* Respect users who turn animations off */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* White button, for use on dark backgrounds */
+.btn--white {
+  color: var(--blue-700);
+  background: var(--white);
+  box-shadow: 0 10px 30px rgba(8, 31, 85, 0.35);
+}
+.btn--white:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(8, 31, 85, 0.45); }
