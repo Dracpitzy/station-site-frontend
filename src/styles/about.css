@@ -1,0 +1,116 @@
+/* ---------- About page ---------- */
+
+.about__heading { margin-bottom: var(--space-5); font-size: var(--text-2xl); }
+
+/* ---------- Our story ---------- */
+.about__story {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: var(--space-7);
+  align-items: center;
+}
+.about__text h2 { margin-bottom: 1rem; font-size: var(--text-2xl); }
+.about__text p { max-width: 58ch; color: var(--ink-soft); }
+.about__text p + p { margin-top: 1rem; }
+
+.about__photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--blue-100);
+  box-shadow: var(--shadow-lg);
+}
+.about__photo img { width: 100%; height: 100%; object-fit: cover; }
+.about__photo figcaption {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--blue-700);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  box-shadow: var(--shadow-md);
+}
+
+/* ---------- Values ---------- */
+.about__values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); }
+.about__value {
+  padding: var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+}
+.about__num { color: var(--blue-500); font-size: var(--text-sm); font-weight: 800; letter-spacing: 0.14em; }
+.about__value h3 { margin: 0.5rem 0 0.6rem; font-size: var(--text-xl); }
+.about__value p { color: var(--ink-soft); }
+
+/* ---------- Presenters ---------- */
+.about__team {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--space-4);
+}
+.about__person {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  padding: 1.1rem 1.2rem;
+  border-radius: var(--radius-md);
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.about__person:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+.about__person h3 { font-size: 1.1rem; }
+.about__role { margin-top: 0.1rem; color: var(--blue-600); font-size: var(--text-sm); font-weight: 700; }
+.about__bio { margin-top: 0.4rem; color: var(--ink-soft); font-size: var(--text-sm); }
+
+/* There are no photos of the presenters yet, so each gets a coloured badge with their initials */
+.about__avatar {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  color: var(--white);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+}
+.about__avatar--0 { background: linear-gradient(135deg, #2f78ff, #0f43b3); }
+.about__avatar--1 { background: linear-gradient(135deg, #5a97ff, #1559e6); }
+.about__avatar--2 { background: linear-gradient(135deg, #1559e6, #081f55); }
+.about__avatar--3 { background: linear-gradient(135deg, #8fbaff, #2f78ff); }
+
+/* ---------- Closing call to action ---------- */
+.about__cta-wrap { padding-bottom: var(--space-8); }
+.about__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+  color: var(--white);
+  box-shadow: 0 18px 44px rgba(21, 89, 230, 0.35);
+}
+.about__cta h2 { font-size: var(--text-xl); }
+.about__cta p { margin-top: 0.3rem; opacity: 0.92; }
+.about__cta-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+.about__ghost { background: rgba(255, 255, 255, 0.18); color: var(--white); }
+.about__ghost:hover { background: rgba(255, 255, 255, 0.28); }
+
+@media (max-width: 860px) {
+  .about__story { grid-template-columns: 1fr; gap: var(--space-5); }
+  .about__photo { order: -1; }
+  .about__values { grid-template-columns: 1fr; }
+}
