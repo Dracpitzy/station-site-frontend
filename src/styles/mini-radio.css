@@ -1,0 +1,3 @@
+/* The mini-player in radio mode: the radio photo takes the place of the video thumbnail */
+.mini__video[hidden] { display: none; }
+.mini__cover img { width: 100%; height: 100%; object-fit: cover; }
