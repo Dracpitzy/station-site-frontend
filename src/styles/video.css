@@ -1,0 +1,117 @@
+/* ---------- Video cards ---------- */
+.vcard { position: relative; display: grid; gap: 0.5rem; align-content: start; }
+.vcard__thumb { position: relative; }
+.cover.vcard__cover { aspect-ratio: 16 / 9; border-radius: 16px; }
+.vcard:hover .cover > * { transform: scale(1.04); }
+
+.vcard__play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.vcard__play svg {
+  box-sizing: content-box;
+  padding: 0.75rem 0.75rem 0.75rem 0.9rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--blue-600);
+  box-shadow: 0 8px 22px rgba(4, 10, 36, 0.35);
+  transition: transform var(--dur) var(--ease);
+}
+.vcard:hover .vcard__play svg { transform: scale(1.1); }
+
+.vcard__time {
+  position: absolute;
+  right: 0.6rem;
+  bottom: 0.6rem;
+  padding: 0.15rem 0.55rem;
+  border-radius: var(--radius-pill);
+  background: rgba(6, 18, 47, 0.8);
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.vcard strong {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  line-height: 1.3;
+  transition: color var(--dur-fast);
+}
+.vcard:hover strong { color: var(--blue-600); }
+.vcard .meta { color: var(--ink-soft); }
+
+/* The button that covers the whole card, so the card is one big target */
+.vcard__hit { position: absolute; inset: 0; border-radius: 16px; cursor: pointer; }
+.vcard__hit:focus-visible { outline: 3px solid var(--blue-400); outline-offset: 3px; }
+
+/* ---------- The pop-up player ---------- */
+html:has(dialog.vmodal[open]) { overflow: hidden; }
+
+.vmodal {
+  width: min(960px, calc(100vw - 2rem));
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--white);
+  overflow: visible;
+}
+.vmodal::backdrop { background: rgba(4, 10, 36, 0.84); }
+.vmodal[open] { animation: vmodal-in 0.28s var(--ease); }
+@keyframes vmodal-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+.vmodal__box {
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: #06122f;
+  box-shadow: var(--shadow-lg);
+}
+.vmodal__screen { position: relative; aspect-ratio: 16 / 9; background: #000; }
+.vmodal__screen video { display: block; width: 100%; height: 100%; object-fit: contain; }
+.vmodal__error {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.7);
+  font-weight: 600;
+  text-align: center;
+}
+
+.vmodal__bar { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1rem 1.2rem; }
+.vmodal__bar h2 { font-size: 1.15rem; line-height: 1.25; }
+.vmodal__bar p { margin-top: 0.2rem; color: rgba(255, 255, 255, 0.7); font-size: var(--text-sm); }
+.vmodal__close {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--white);
+  transition: background var(--dur-fast);
+}
+.vmodal__close:hover { background: rgba(255, 255, 255, 0.24); }
+
+@media (max-width: 560px) {
+  .vmodal { width: calc(100vw - 1rem); }
+  .vmodal__bar { padding: 0.8rem 1rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vmodal[open] { animation: none; }
+}

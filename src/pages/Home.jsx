@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Cover from "../components/Cover";
 import LiveCard from "../components/LiveCard";
 import OnAirCard from "../components/OnAirCard";
+import VideoSection from "../components/VideoSection";
 import { BlockHead, Card, articleLink } from "../components/StoryCards";
 import { useOnAir } from "../hooks/useOnAir";
 import { photoProps } from "../data/images";
@@ -167,6 +168,8 @@ export default function Home() {
       </div>
 
       <div className="container">
+        <VideoSection />
+
         {["politics", "business", "sports", "entertainment"].map((slug) => (
           <CategoryRow key={slug} slug={slug} />
         ))}
