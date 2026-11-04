@@ -1,0 +1,239 @@
+/* ---------- Schedule page ---------- */
+
+.sched { --t: 5.6rem; --g: 1.6rem; padding-bottom: var(--space-7); }
+
+.sched__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+/* TV | Radio switch. The coloured thumb slides between the two. */
+.sched__switch {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 4px;
+  border-radius: var(--radius-pill);
+  background: var(--blue-50);
+}
+.sched__switch::before {
+  content: "";
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  left: 4px;
+  width: calc(50% - 4px);
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+  box-shadow: 0 6px 18px rgba(21, 89, 230, 0.35);
+  transition: transform var(--dur) var(--ease);
+}
+.sched__switch[data-channel="radio"]::before { transform: translateX(100%); }
+.sched__switch button {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 7.5rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: var(--radius-pill);
+  color: var(--blue-700);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  transition: color var(--dur-fast);
+}
+.sched__switch button[aria-pressed="true"] { color: var(--white); }
+
+/* The seven days. They scroll sideways on a phone. */
+.sched__days {
+  display: flex;
+  gap: 0.4rem;
+  max-width: 100%;
+  padding-bottom: 0.3rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+}
+.sched__days::-webkit-scrollbar { display: none; }
+.sched__day {
+  flex: none;
+  display: grid;
+  justify-items: center;
+  gap: 0.1rem;
+  min-width: 3.7rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--radius-sm);
+  background: var(--blue-50);
+  color: var(--blue-700);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  scroll-snap-align: start;
+  transition: background var(--dur-fast), color var(--dur-fast), box-shadow var(--dur) var(--ease);
+}
+.sched__day strong { font-size: var(--text-base); }
+.sched__day:hover { background: var(--blue-100); }
+.sched__day[aria-pressed="true"] {
+  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+  color: var(--white);
+  box-shadow: 0 6px 18px rgba(21, 89, 230, 0.35);
+}
+
+.sched__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4rem 1.2rem;
+  margin: 2rem 0 1.2rem;
+}
+.sched__head h2 { font-size: var(--text-xl); }
+.sched__head p { color: var(--ink-soft); font-size: var(--text-sm); }
+.sched__jump {
+  margin-left: auto;
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--blue-50);
+  color: var(--blue-700);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  transition: background var(--dur-fast);
+}
+.sched__jump:hover { background: var(--blue-100); }
+
+/* ---------- The timeline ---------- */
+.sched__list { position: relative; }
+.sched__list::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--t) + var(--g) / 2 - 1px);
+  width: 2px;
+  border-radius: 2px;
+  background: var(--blue-100);
+}
+.sched__item {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--t) var(--g) minmax(0, 1fr);
+  padding-bottom: 0.8rem;
+  scroll-margin-top: calc(var(--nav-h) + 1.5rem);
+}
+.sched__time { padding-top: 1rem; text-align: right; font-variant-numeric: tabular-nums; }
+.sched__time strong { display: block; font-size: var(--text-sm); color: var(--ink); }
+.sched__time small { display: block; margin-top: 0.15rem; font-size: 0.75rem; color: var(--ink-soft); }
+.sched__dot {
+  position: relative;
+  z-index: 1;
+  justify-self: center;
+  align-self: start;
+  width: 12px;
+  height: 12px;
+  margin-top: 1.25rem;
+  border-radius: 50%;
+  background: var(--white);
+  box-shadow: 0 0 0 3px var(--blue-200);
+}
+
+.sched__card {
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius-md);
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--dur) var(--ease);
+}
+.sched__card:hover { box-shadow: var(--shadow-md); }
+.sched__card h3 { font-size: 1.15rem; }
+.sched__meta { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.45rem; }
+.sched__hosts { margin-top: 0.2rem; color: var(--blue-700); font-size: var(--text-sm); font-weight: 600; }
+.sched__desc { margin-top: 0.3rem; color: var(--ink-soft); font-size: var(--text-sm); }
+
+/* Category tags */
+.sched__tag {
+  padding: 0.15rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background: var(--blue-50);
+  color: var(--blue-700);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.sched__tag--news { background: #e3eeff; color: #1559e6; }
+.sched__tag--business { background: #dcf4ee; color: #0b6b5a; }
+.sched__tag--sports { background: #ffeddc; color: #a24a07; }
+.sched__tag--entertainment { background: #fde6f1; color: #a3205a; }
+.sched__tag--music { background: #ece6ff; color: #542bc0; }
+.sched__tag--talk { background: #fff3cf; color: #7a5800; }
+.sched__tag--documentary { background: #e6ecf3; color: #384a61; }
+.sched__tag--faith { background: #e2f5e0; color: #28721f; }
+.sched__tag--kids { background: #ffe3e3; color: #a8261c; }
+
+/* Earlier today */
+.sched__item.is-past .sched__card,
+.sched__item.is-past .sched__time { opacity: 0.55; }
+
+/* On air now */
+.sched__item.is-now .sched__time strong { color: var(--blue-700); }
+.sched__item.is-now .sched__dot { background: var(--blue-500); box-shadow: 0 0 0 4px var(--blue-200); }
+.sched__item.is-now .sched__card {
+  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+  color: var(--white);
+  box-shadow: 0 14px 36px rgba(21, 89, 230, 0.35);
+}
+.sched__item.is-now .sched__hosts,
+.sched__item.is-now .sched__desc { color: rgba(255, 255, 255, 0.9); }
+.sched__item.is-now .sched__tag { background: rgba(255, 255, 255, 0.2); color: var(--white); }
+.sched__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.15rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--blue-700);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.sched__live { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem 1rem; margin-top: 0.9rem; }
+.sched__prog {
+  flex: 1 1 140px;
+  height: 4px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+}
+.sched__prog span {
+  display: block;
+  height: 100%;
+  background: var(--white);
+  transform-origin: left;
+  transition: transform 1s linear;
+}
+.sched__left { font-size: var(--text-sm); opacity: 0.9; }
+.sched__watch {
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--blue-700);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  transition: transform var(--dur-fast) var(--ease);
+}
+.sched__watch:hover { transform: translateY(-2px); }
+
+/* ---------- Phones ---------- */
+@media (max-width: 560px) {
+  .sched { --t: 4.4rem; --g: 1.2rem; }
+  .sched__switch { width: 100%; }
+  .sched__switch button { min-width: 0; }
+  .sched__jump { margin-left: 0; }
+  .sched__card { padding: 0.9rem 1rem; }
+}
