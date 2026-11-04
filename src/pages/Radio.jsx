@@ -6,7 +6,6 @@ import { radioPlayer, useRadioPlayer } from "../player/radio";
 import { getDaySchedule, hostNames } from "../data/schedule";
 import { station } from "../data/config";
 import { photoProps } from "../data/images";
-import { LiquidGlass } from "../components/liquid-glass/LiquidGlass";
 import { Icon } from "../components/Icons";
 import { timeLeft } from "../components/OnAirCard";
 import "../styles/player.css";
@@ -49,7 +48,7 @@ export default function Radio() {
           <h1>Listen live</h1>
         </header>
 
-        <LiquidGlass preset="player" radius={36} className={`rplayer${status === "playing" ? " is-playing" : ""}`}>
+        <div className={`rplayer${status === "playing" ? " is-playing" : ""}`}>
           <div className="rplayer__body">
             <div className="rplayer__art">
               <img {...cover} alt="" sizes="(max-width: 760px) 70vw, 240px" decoding="async" />
@@ -126,7 +125,7 @@ export default function Radio() {
               </div>
             </div>
           </div>
-        </LiquidGlass>
+        </div>
 
         <div className="tvpage__info">
           <div>

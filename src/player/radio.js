@@ -15,6 +15,9 @@ const META_REFRESH_MS = 60000;
 const clamp01 = (n) => Math.min(1, Math.max(0, Number.isFinite(n) ? n : 1));
 const isHls = (url) => /\.m3u8(\?|#|$)/i.test(url);
 
+// The stream can be one link or a list. The list is tried in order, so a second link is a backup.
+const sources = () => [].concat(streams.radio).filter(Boolean);
+
 function loadPrefs() {
   try {
     const p = JSON.parse(localStorage.getItem(PREFS_KEY));
@@ -39,6 +42,7 @@ let mediaRecoveries = 0;
 let retryTimer = 0;
 let metaTimer = 0;
 let startToken = 0; // lets a press of stop cancel a start that is still loading
+let sourceIndex = 0; // which link in the list is being tried
 
 // status: idle | connecting | playing | paused | buffering | reconnecting | offline
 let state = {
@@ -93,7 +97,16 @@ function ensureAudio() {
   });
   audio.addEventListener("error", () => {
     // With hls.js, errors are handled by its own error event. This covers native playback.
-    if (state.session && !hls && state.status !== "idle") retry();
+    if (!state.session || hls || state.status === "idle") return;
+    const e = audio.error;
+    console.warn(`[radio] could not play ${sources()[sourceIndex]}`, e ? `(code ${e.code}) ${e.message || ""}` : "");
+    // This link may be down. Try the next one before treating it as a lost connection.
+    if (sourceIndex < sources().length - 1) {
+      sourceIndex++;
+      start();
+      return;
+    }
+    retry();
   });
   audio.addEventListener("ended", () => {
     // A live stream that ends has lost its connection.
@@ -123,7 +136,7 @@ function destroyHls() {
 async function load() {
   const a = ensureAudio();
   destroyHls();
-  const url = streams.radio;
+  const url = sources()[sourceIndex];
 
   // MP3 and AAC streams (Icecast, Shoutcast) play natively. Safari and iPhones play HLS natively too.
   if (!isHls(url) || a.canPlayType("application/vnd.apple.mpegurl")) {
@@ -174,7 +187,11 @@ function fail() {
 }
 
 function retry() {
-  scheduleRetry(start);
+  // A new round starts from the first link again
+  scheduleRetry(() => {
+    sourceIndex = 0;
+    start();
+  });
 }
 
 // ---------- lock screen and headset controls ----------
@@ -240,7 +257,7 @@ async function start() {
   set({ session: true, status: "connecting", playing: false });
   bindMediaSession();
 
-  if (!streams.radio) {
+  if (!sources().length) {
     fail();
     return;
   }
@@ -255,8 +272,16 @@ async function start() {
   } catch (err) {
     if (err && err.name === "NotAllowedError") set({ status: "paused", playing: false });
     else if (err && err.name === "AbortError") return; // a newer start() or a stop took over
-    else fail();
+    else if (hls) fail();
+    // For a plain stream, the element's own error event moves on to the next link
   }
+}
+
+// A fresh press of play by the visitor: begin again from the first link
+function begin() {
+  sourceIndex = 0;
+  retries = 0;
+  return start();
 }
 
 function resume() {
@@ -276,7 +301,7 @@ function resume() {
 }
 
 function toggle() {
-  if (!state.session || state.status === "idle" || state.status === "offline") start();
+  if (!state.session || state.status === "idle" || state.status === "offline") begin();
   else if (state.status === "connecting" || state.status === "reconnecting") stop();
   else if (ensureAudio().paused) resume();
   else audio.pause();
@@ -292,6 +317,7 @@ function stop() {
     audio.load();
   }
   retries = 0;
+  sourceIndex = 0;
   set({ session: false, started: false, playing: false, status: "idle" });
   release("radio");
 }
@@ -323,9 +349,9 @@ register("radio", stop);
 
 export const radioPlayer = {
   toggle,
-  start,
+  start: begin,
   stop,
-  retry: start,
+  retry: begin,
   setVolume,
   toggleMute,
   get volumeSettable() {
