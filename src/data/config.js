@@ -11,5 +11,7 @@ export const station = {
 export const streams = {
   // Public test stream (Big Buck Bunny). Replace with the station's own HLS .m3u8 link when you have it.
   tv: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
-  radio: "", // audio stream link goes here
+  // Public test stream (SomaFM Groove Salad, a commercial-free station). For development only.
+  // Replace with the station's own MP3, AAC or HLS (.m3u8) link when you have it.
+  radio: "https://ice.somafm.com/groovesalad",
 };

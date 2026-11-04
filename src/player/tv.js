@@ -1,5 +1,6 @@
 import { useSyncExternalStore } from "react";
 import { streams } from "../data/config.js";
+import { activeChannel, claim, register, release } from "./channels.js";
 
 // The live TV player. It lives outside React, so playback survives page changes.
 // There is exactly one <video> element. Pages and the mini-player take turns holding it.
@@ -213,6 +214,7 @@ function retry() {
 // auto: true = started by the front page, false = started by the visitor, undefined = keep as it was.
 async function start(auto) {
   const v = ensureVideo();
+  if (auto !== undefined) claim("tv"); // starting the video stops the radio
   if (auto === true) {
     v.muted = true;
     set({ auto: true });
@@ -273,6 +275,7 @@ function stop() {
   }
   retries = 0;
   set({ session: false, started: false, playing: false, status: "idle", levels: [], level: -1, pip: false, auto: false });
+  release("tv");
   // Autoplay may have silenced the video. Give the visitor's own volume settings back.
   if (video) {
     const prefs = loadPrefs();
@@ -280,6 +283,8 @@ function stop() {
     video.muted = prefs.muted;
   }
 }
+
+register("tv", stop);
 
 function setVolume(value) {
   engage();
@@ -323,6 +328,7 @@ function autoAllowed() {
 // Called by the front page when its live card scrolls into view.
 function autoStart() {
   if (!autoAllowed()) return;
+  if (activeChannel() === "radio") return; // the visitor is listening to the radio, do not talk over it
   if (state.session && !state.auto) return; // the visitor is already watching, leave it alone
   if (state.session && state.auto) {
     // Paused because the card scrolled away. Carry on.
