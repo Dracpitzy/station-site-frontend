@@ -9,6 +9,7 @@ const loaders = {
   Schedule: () => import("./pages/Schedule.jsx"),
   About: () => import("./pages/About.jsx"),
   Contact: () => import("./pages/Contact.jsx"),
+  NotFound: () => import("./pages/NotFound.jsx"),
   Lab: () => import("./pages/Lab.jsx"),
 };
 
