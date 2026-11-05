@@ -10,22 +10,34 @@
   --blue-700: #0f43b3;
   --blue-900: #081f55;
 
+  /* Brand surfaces: the navy of the navigation, deep backgrounds, and a warm white for alternate bands.
+     Champagne is a rare accent. It is for the About page only. */
+  --navy: #0a1747;
+  --midnight: #071426;
+  --slate: #253b58;
+  --warm-white: #f4f3ef;
+  --champagne: #c8b991;
+
   /* Neutrals */
   --white: #ffffff;
   --ink: #0a1a3a;
   --ink-soft: #52628a;
   --live: #ff3b4e;
+  --rule: #dde3ee; /* thin dividers between stories */
 
-  /* Type: system fonts = zero download, instant text */
-  --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI",
-          Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Type. Headlines are Barlow Condensed, the interface is Source Sans 3 and long reading is Source Serif 4.
+     Each has a measured stand-in (see fonts.css) so text does not jump while the real font loads. */
+  --font-display: "Barlow Condensed", "Barlow Condensed Fallback", "Arial Narrow", sans-serif;
+  --font: "Source Sans 3 Variable", "Source Sans 3 Fallback", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-serif: "Source Serif 4 Variable", "Source Serif 4 Fallback", Georgia, "Times New Roman", serif;
+
   --text-xs: 0.8125rem;
   --text-sm: 0.9375rem;
   --text-base: 1rem;
   --text-lg: 1.25rem;
-  --text-xl: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
-  --text-2xl: clamp(2rem, 1.4rem + 2.5vw, 3.25rem);
-  --text-3xl: clamp(2.6rem, 1.6rem + 4vw, 4.75rem);
+  --text-xl: clamp(1.7rem, 1.4rem + 1.3vw, 2.3rem);
+  --text-2xl: clamp(2.3rem, 1.6rem + 2.8vw, 3.8rem);
+  --text-3xl: clamp(3rem, 1.8rem + 4.6vw, 5.6rem);
 
   /* Spacing */
   --space-1: 0.25rem;
@@ -37,16 +49,16 @@
   --space-7: 3rem;
   --space-8: 5rem;
 
-  /* Shape */
-  --radius-sm: 12px;
-  --radius-md: 20px;
-  --radius-lg: 28px;
+  /* Shape: small corners. Fully round is only for buttons and the live badge. */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
   --radius-pill: 999px;
 
-  /* Depth (shadows replace borders everywhere) */
-  --shadow-sm: 0 2px 8px rgba(8, 31, 85, 0.06);
-  --shadow-md: 0 10px 30px rgba(8, 31, 85, 0.10);
-  --shadow-lg: 0 24px 60px rgba(8, 31, 85, 0.16);
+  /* Depth: shadows are kept for things that float (the player, pop-ups, navigation). Stories use thin dividers. */
+  --shadow-sm: 0 1px 3px rgba(7, 20, 38, 0.08);
+  --shadow-md: 0 6px 18px rgba(7, 20, 38, 0.12);
+  --shadow-lg: 0 18px 44px rgba(7, 20, 38, 0.2);
 
   /* Motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);

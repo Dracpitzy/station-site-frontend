@@ -1,0 +1,30 @@
+/* Stand-in fonts. While the real fonts download, the browser shows these. They are ordinary system
+   fonts stretched or shrunk (size-adjust) so each takes the same room as the real font, which means the
+   text does not jump when the real font arrives. The numbers are measured from the real fonts. */
+
+@font-face {
+  font-family: "Barlow Condensed Fallback";
+  src: local("Arial"), local("Helvetica Neue"), local("Helvetica");
+  size-adjust: 76.49%;
+  ascent-override: 130.73%;
+  descent-override: 26.15%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Source Sans 3 Fallback";
+  src: local("Arial"), local("Helvetica Neue"), local("Helvetica");
+  size-adjust: 93.76%;
+  ascent-override: 109.21%;
+  descent-override: 42.66%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "Source Serif 4 Fallback";
+  src: local("Times New Roman"), local("Times");
+  size-adjust: 117.91%;
+  ascent-override: 87.87%;
+  descent-override: 28.41%;
+  line-gap-override: 0%;
+}

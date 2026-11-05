@@ -1,41 +1,55 @@
 /* ---------- Shared by every page that shows stories ---------- */
-.cover { position: relative; overflow: hidden; background: var(--blue-100); }
+
+/* Picture ratios used across the site: 16:9 for leads and cards, 4:3 for small phone thumbnails, 3:4 for portraits */
+.ratio-16x9 { aspect-ratio: 16 / 9; }
+.ratio-4x3 { aspect-ratio: 4 / 3; }
+.ratio-3x4 { aspect-ratio: 3 / 4; }
+
+/* Dark behind the picture, so a slow image never flashes a light box */
+.cover { position: relative; overflow: hidden; background: var(--midnight); }
 .cover > img,
 .cover > svg { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s var(--ease); }
 .card:hover .cover > * { transform: scale(1.04); }
 
 .meta { display: flex; gap: 0.8rem; font-size: var(--text-xs); }
+
+/* The category label over a picture: plain capitals with a short blue bar, not a pill */
 .chip {
   display: inline-block;
-  padding: 0.22rem 0.7rem;
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.2);
-  -webkit-backdrop-filter: blur(8px);
-  backdrop-filter: blur(8px);
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.1em;
+  padding-left: 0.55rem;
+  border-left: 3px solid var(--blue-400);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
   text-transform: uppercase;
 }
 
 /* Section titles */
-.blockhead { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 0.7rem; }
+.blockhead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--rule);
+}
 .blockhead h2 {
   position: relative;
-  padding-left: 0.7rem;
-  font-size: var(--text-sm);
-  font-weight: 800;
-  letter-spacing: 0.1em;
+  padding-left: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1.1;
   text-transform: uppercase;
 }
 .blockhead h2::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 0.1em;
-  bottom: 0.1em;
+  top: 0.12em;
+  bottom: 0.12em;
   width: 4px;
-  border-radius: 2px;
   background: var(--blue-500);
 }
 .blockhead__more { font-size: var(--text-xs); font-weight: 700; color: var(--blue-600); }
@@ -43,18 +57,19 @@
 
 /* Story cards and the rows they sit in */
 .rowsec { margin-top: 2.2rem; }
-.rowsec__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.1rem; }
+.rowsec__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.4rem 1.1rem; }
 .card { display: grid; gap: 0.5rem; align-content: start; }
-.cover.card__cover { aspect-ratio: 16 / 10; border-radius: 16px; }
-.card__cat { font-size: 0.68rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue-600); }
+.cover.card__cover { aspect-ratio: 16 / 9; border-radius: var(--radius-md); }
+.card__cat { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue-600); }
 .card strong {
   display: -webkit-box;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  font-size: var(--text-sm);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
   font-weight: 700;
-  line-height: 1.3;
+  line-height: 1.12;
   transition: color var(--dur-fast);
 }
 .card:hover strong { color: var(--blue-600); }
@@ -62,8 +77,8 @@
 
 /* A wide card is bigger, for the story that leads a list */
 .card--wide { grid-column: span 2; }
-.card--wide .cover.card__cover { aspect-ratio: 16 / 9; border-radius: 20px; }
-.card--wide strong { font-size: var(--text-xl); line-height: 1.2; letter-spacing: -0.01em; -webkit-line-clamp: 3; }
+.card--wide .cover.card__cover { aspect-ratio: 16 / 9; border-radius: var(--radius-md); }
+.card--wide strong { font-size: var(--text-xl); line-height: 1.08; -webkit-line-clamp: 3; }
 
 /* Category chips */
 .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; }

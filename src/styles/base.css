@@ -17,8 +17,10 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
 ul { list-style: none; }
 
-h1, h2, h3, h4 { line-height: 1.12; letter-spacing: -0.02em; font-weight: 700; }
-h1 { font-size: var(--text-3xl); }
+/* Headlines are condensed. h4 is only ever a small label, so it keeps the interface font. */
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.05; letter-spacing: 0; font-weight: 700; }
+h4 { font-family: var(--font); line-height: 1.2; font-weight: 700; }
+h1 { font-size: var(--text-3xl); font-weight: 800; }
 h2 { font-size: var(--text-2xl); }
 h3 { font-size: var(--text-xl); }
 
@@ -39,6 +41,7 @@ h3 { font-size: var(--text-xl); }
 
 .section { padding-block: var(--space-8); }
 .section--tint { background: var(--blue-50); }
+.section--warm { background: var(--warm-white); }
 
 /* Buttons */
 .btn {
@@ -54,10 +57,9 @@ h3 { font-size: var(--text-xl); }
 
 .btn--primary {
   color: var(--white);
-  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
-  box-shadow: 0 8px 24px rgba(21, 89, 230, 0.35);
+  background: var(--blue-600);
 }
-.btn--primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(21, 89, 230, 0.45); }
+.btn--primary:hover { background: var(--blue-700); }
 
 .btn--soft { color: var(--blue-700); background: var(--blue-100); }
 .btn--soft:hover { background: var(--blue-200); }
@@ -77,6 +79,5 @@ h3 { font-size: var(--text-xl); }
 .btn--white {
   color: var(--blue-700);
   background: var(--white);
-  box-shadow: 0 10px 30px rgba(8, 31, 85, 0.35);
 }
-.btn--white:hover { transform: translateY(-2px); box-shadow: 0 14px 36px rgba(8, 31, 85, 0.45); }
+.btn--white:hover { background: var(--blue-50); }
