@@ -19,6 +19,11 @@ const ITEMS = [
   { to: "/contact", label: "Contact", icon: "mail", page: "Contact" },
 ];
 
+// On a phone the bottom bar has room for five slots. Home, Live TV, Radio and News get one each,
+// and the pages from SECONDARY_FROM on share the fifth slot, "More".
+const SECONDARY_FROM = 4;
+const MORE_INDEX = ITEMS.length;
+
 // ---------- settings you can change ----------
 const RAIL_AT = 80; // the rail can only appear once you are this far down the page
 const TOP_AT = 24; // this close to the top, it is always the bar
@@ -219,7 +224,8 @@ function useActiveBox(trackRef, index, mode) {
 
 // The glass is bigger than the item it covers, so it looks like it swells out of the track.
 // In the bar it grows a little all round. In the rail it is wide enough to hold the label and
-// reaches clearly past both edges. On a phone it rises above the bottom bar.
+// reaches clearly past both edges. On a phone it stays inside its own slot and rises only a few
+// pixels above the bottom bar, so it never touches the slots beside it.
 function glassBox(box, mode) {
   if (mode === "rail") {
     const w = 56;
@@ -227,9 +233,9 @@ function glassBox(box, mode) {
     return { w, h, x: box.x + (box.w - w) / 2, y: box.y + (box.h - h) / 2 };
   }
   if (mode === "compact") {
-    const w = Math.max(box.w + 20, 92);
-    const h = box.h + 12;
-    return { w, h, x: box.x + (box.w - w) / 2, y: box.y + (box.h - h) / 2 - 4 };
+    const w = box.w - 8;
+    const h = box.h - 2;
+    return { w, h, x: box.x + 4, y: box.y - 4 };
   }
   const w = box.w + 16;
   const h = box.h + 16;
@@ -353,6 +359,17 @@ function playMorph(first, parts, index, mode) {
 }
 
 // ---------- pieces ----------
+
+// Three dots, for the "More" slot on a phone
+function MoreIcon({ size = 20 }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true" focusable="false">
+      <circle cx="5" cy="12" r="1.9" fill="currentColor" />
+      <circle cx="12" cy="12" r="1.9" fill="currentColor" />
+      <circle cx="19" cy="12" r="1.9" fill="currentColor" />
+    </svg>
+  );
+}
 
 function NavItem({ item }) {
   return (
@@ -497,8 +514,29 @@ export default function Navbar() {
   const resting = useRailRest(rail, headerRef);
 
   const mode = compact ? "compact" : rail ? "rail" : "bar";
-  const index = activeIndexFor(pathname);
+  const activeIndex = activeIndexFor(pathname);
+  // On a phone the pages that live under "More" light up the More slot
+  const index = compact && activeIndex >= SECONDARY_FROM ? MORE_INDEX : activeIndex;
   const box = useActiveBox(trackRef, index, mode);
+
+  // The "More" sheet. It remembers which page it was opened on, so going to another page closes it.
+  const [moreAt, setMoreAt] = useState(null);
+  const moreRef = useRef(null);
+  const moreOpen = compact && moreAt === pathname;
+
+  useEffect(() => {
+    if (!moreOpen) return;
+    const onKey = (e) => e.key === "Escape" && setMoreAt(null);
+    const onDown = (e) => {
+      if (moreRef.current && !moreRef.current.contains(e.target)) setMoreAt(null);
+    };
+    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", onDown);
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", onDown);
+    };
+  }, [moreOpen]);
 
   // After the swap, animate from the old positions to the new ones.
   useLayoutEffect(() => {
@@ -554,11 +592,44 @@ export default function Navbar() {
               item.to === "/news" ? (
                 <NewsCell key={item.to} item={item} index={i} />
               ) : (
-                <div className="nav__cell" key={item.to} data-nav-index={i}>
+                <div
+                  className={`nav__cell${i >= SECONDARY_FROM ? " nav__cell--secondary" : ""}`}
+                  key={item.to}
+                  data-nav-index={i}
+                >
                   <NavItem item={item} />
                 </div>
               )
             )}
+
+            {/* Phone only: the pages that do not have a slot of their own */}
+            <div className="nav__cell nav__cell--more" data-nav-index={MORE_INDEX} ref={moreRef}>
+              <button
+                type="button"
+                className={`nav__item nav__more${activeIndex >= SECONDARY_FROM ? " active" : ""}`}
+                aria-haspopup="dialog"
+                aria-expanded={moreOpen}
+                aria-controls="nav-more-sheet"
+                onClick={() => setMoreAt(moreOpen ? null : pathname)}
+              >
+                <MoreIcon size={20} />
+                <span className="nav__label">More</span>
+              </button>
+              <div id="nav-more-sheet" className={`nav__sheet${moreOpen ? " is-open" : ""}`} role="dialog" aria-label="More pages">
+                {ITEMS.slice(SECONDARY_FROM).map((item) => (
+                  <NavLink
+                    key={item.to}
+                    to={item.to}
+                    className="nav__sheetlink"
+                    onClick={() => setMoreAt(null)}
+                    {...preloadProps(item.page)}
+                  >
+                    <Icon name={item.icon} size={20} />
+                    <span>{item.label}</span>
+                  </NavLink>
+                ))}
+              </div>
+            </div>
 
             <LiquidGlass
               preset={INDICATOR}
