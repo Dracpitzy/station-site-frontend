@@ -1,0 +1,84 @@
+/* ---------- ITV Radio: a band of blue frosted glass across a photograph ----------
+   This is the light kind of glass (blur, a blue tint and a bright edge). The bending kind is far too
+   heavy at this width, and made scrolling stutter when it was tried on a wide surface. */
+
+.radioband {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  align-items: center;
+  min-height: 300px;
+  margin-top: var(--space-8);
+  overflow: hidden;
+  background: var(--midnight);
+}
+.radioband__bg { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; }
+
+/* Blue light behind the glass, so the glass has something to blur */
+.radioband__shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(38% 90% at 12% 55%, rgba(47, 120, 255, 0.7), transparent 70%),
+    radial-gradient(34% 80% at 88% 35%, rgba(90, 151, 255, 0.5), transparent 70%),
+    linear-gradient(180deg, rgba(7, 20, 38, 0.55), rgba(7, 20, 38, 0.8));
+}
+
+/* The band itself: edge to edge, blurred a little, blue, with a bright top edge */
+.radioband__glass {
+  position: relative;
+  padding-block: 1.8rem;
+  color: var(--white);
+  background: linear-gradient(135deg, rgba(70, 140, 255, 0.34), rgba(10, 23, 71, 0.42));
+  border-block: 1px solid rgba(190, 215, 255, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.12),
+    0 24px 60px rgba(4, 10, 36, 0.35);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  backdrop-filter: blur(14px) saturate(1.5);
+}
+/* A soft sheen across the top, so the glass feels wet and curved */
+.radioband__glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 45%);
+  pointer-events: none;
+}
+
+.radioband__row {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 2rem;
+}
+.radioband__label {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+.radioband__id h2 { margin-top: 0.4rem; font-size: clamp(1.9rem, 1.3rem + 1.8vw, 2.7rem); font-weight: 800; line-height: 1; }
+.radioband__time { margin-top: 0.4rem; color: rgba(255, 255, 255, 0.85); font-size: var(--text-sm); font-weight: 600; }
+
+.radioband__progress { display: flex; align-items: center; gap: 0.9rem; color: rgba(255, 255, 255, 0.8); font-size: var(--text-xs); }
+.radioband__bar { flex: 1; height: 4px; overflow: hidden; border-radius: 4px; background: rgba(255, 255, 255, 0.28); }
+.radioband__bar span { display: block; height: 100%; background: var(--white); transform-origin: left; transition: transform 1s linear; }
+.radioband__next { margin-top: 0.7rem; color: rgba(255, 255, 255, 0.85); font-size: var(--text-sm); }
+.radioband__next strong { color: var(--white); }
+
+.radioband__actions { display: grid; justify-items: start; gap: 0.7rem; }
+.radioband__more { color: rgba(255, 255, 255, 0.85); font-size: var(--text-sm); font-weight: 600; }
+.radioband__more:hover { color: var(--white); text-decoration: underline; }
+
+/* Until the phone layout is done, a narrow screen stacks the band's parts */
+@media (max-width: 900px) {
+  .radioband__row { grid-template-columns: 1fr; gap: 1.2rem; }
+}

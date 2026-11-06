@@ -1,0 +1,47 @@
+/* ---------- Story tiles ---------- */
+.tile { display: grid; gap: 0.7rem; align-content: start; color: inherit; }
+.tile__body { display: grid; gap: 0.4rem; align-content: start; }
+.cover.tile__img { aspect-ratio: 16 / 9; border-radius: var(--radius-sm); }
+.tile:hover .cover > * { transform: scale(1.04); }
+
+.tile__cat {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--blue-600);
+}
+.tile__title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: 0;
+  text-wrap: balance;
+  transition: color var(--dur-fast);
+}
+.tile:hover .tile__title { color: var(--blue-600); }
+.tile__summary { color: var(--ink-soft); font-size: var(--text-sm); line-height: 1.5; }
+.tile__meta { display: flex; gap: 0.8rem; color: var(--ink-soft); font-size: var(--text-xs); }
+
+/* The main story: the loudest headline on the page */
+.tile--lead .tile__title { font-size: clamp(2.4rem, 1.5rem + 2.6vw, 3.7rem); font-weight: 800; line-height: 1.02; }
+.tile--lead .tile__summary { max-width: 60ch; font-size: 1.1rem; }
+.tile--lead .tile__body { gap: 0.55rem; }
+
+/* The leader of a category */
+.tile--feature .tile__title { font-size: clamp(1.9rem, 1.3rem + 1.6vw, 2.5rem); }
+.tile--feature .tile__summary { font-size: 1rem; }
+
+.tile--side .tile__title { font-size: 1.55rem; }
+.tile--grid .tile__title { font-size: 1.38rem; }
+
+/* A compact row: a small picture and a headline */
+.tile--row { grid-template-columns: 124px minmax(0, 1fr); gap: 1rem; align-items: start; }
+.cover.tile--row .tile__img,
+.tile--row .cover.tile__img { aspect-ratio: 4 / 3; }
+.tile--row .tile__title { font-size: 1.2rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tile:hover .cover > * { transform: none; }
+}

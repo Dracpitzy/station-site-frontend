@@ -5,14 +5,14 @@ import "../styles/stories.css";
 
 export const articleLink = (s) => `/news/${s.id}`;
 
-// A small section title with an accent bar, and an optional "View all" link.
-export function BlockHead({ children, to }) {
+// A section title with an accent bar, and an optional link on the right ("View all" unless told otherwise).
+export function BlockHead({ children, to, label = "View all" }) {
   return (
     <div className="blockhead">
       <h2>{children}</h2>
       {to && (
         <Link to={to} className="blockhead__more">
-          View all
+          {label}
         </Link>
       )}
     </div>

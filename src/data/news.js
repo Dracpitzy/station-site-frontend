@@ -98,6 +98,36 @@ const RAW = [
     "Analysts expect calmer markets through the end of the year.", 200, 3700),
   story("tourism-rebounds-flights-return", "world", "Tourism rebounds across the continent as flights return",
     "Hotels report their best bookings in three years.", 1700, 2200),
+
+  // More placeholder stories, added so the redesigned front page has enough different stories to show
+  // each one only once. Replace them with real articles later.
+  story("committee-hearings-local-government-funding", "politics", "Committee opens hearings on direct funding for local governments",
+    "Members will hear from council chairs and civil society groups over two days.", 800, 3500),
+  story("assembly-youth-employment-bill", "politics", "State assembly debates youth employment bill",
+    "The proposal would fund apprenticeships in construction, farming and technology.", 1100, 3000),
+  story("ministers-brief-lawmakers-rail-project", "politics", "Ministers brief lawmakers on stalled rail project",
+    "Officials said construction will resume once outstanding payments are cleared.", 1500, 2700),
+
+  story("textile-factories-reopen-power-deal", "business", "Textile factories reopen after new power supply deal",
+    "Hundreds of workers return as three plants restart their production lines.", 900, 3600),
+  story("cooperatives-sign-sesame-export-contract", "business", "Farmers' cooperatives sign first export contract for sesame",
+    "The deal covers two harvest seasons and guarantees a minimum price.", 1300, 3200),
+  story("banks-extend-transfer-support-hours", "business", "Banks extend support hours as festive shopping begins",
+    "Customers can now reach help desks until late evening on weekdays.", 1800, 2500),
+
+  story("womens-league-opens-record-crowds", "sports", "Women's league opens with record crowds",
+    "Four of the six opening matches drew full stadiums.", 850, 5100),
+  story("young-sprinter-national-record", "sports", "Young sprinter breaks national record at the school games",
+    "The teenager shaved a tenth of a second off the previous best.", 1200, 4400),
+  story("coach-praises-defence-cup-win", "sports", "Coach praises defence after cup quarter-final win",
+    "A clean sheet sends the home side into the semi-finals.", 1600, 2800),
+
+  story("comedy-night-sells-out-three-shows", "entertainment", "Comedy night sells out three shows in a week",
+    "Organisers say a fourth date will be announced on Monday.", 950, 4900),
+  story("gospel-choir-album-tops-charts", "entertainment", "Gospel choir's debut album tops the streaming charts",
+    "The 14-track record passed a million streams in its first four days.", 1400, 5600),
+  story("radio-drama-returns-new-season", "entertainment", "Beloved radio drama returns for a new season",
+    "Listeners can hear the first episode this Sunday evening on ITV Radio.", 1900, 3300),
 ];
 
 const BOOT = Date.now();

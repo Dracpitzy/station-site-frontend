@@ -1,14 +1,11 @@
 import { Link } from "react-router-dom";
-import Cover from "../components/Cover";
-import LiveCard from "../components/LiveCard";
-import OnAirCard from "../components/OnAirCard";
+import LivePanel from "../components/LivePanel";
+import RadioBand from "../components/RadioBand";
 import VideoSection from "../components/VideoSection";
-import { BlockHead, Card, articleLink } from "../components/StoryCards";
-import { useOnAir } from "../hooks/useOnAir";
-import { photoProps } from "../data/images";
+import { GridTile, LeadTile, RowTile, SideTile } from "../components/Tiles";
+import { BlockHead, articleLink } from "../components/StoryCards";
 import {
   breakingStory,
-  categories,
   categoryName,
   inCategory,
   latest,
@@ -18,37 +15,89 @@ import {
 } from "../data/news";
 import "../styles/home.css";
 
-// ---------- Breaking news strip ----------
-function Breaking() {
-  const s = breakingStory;
-  if (!s) return null;
+// Every story is shown once on the front page. Whatever one section takes is kept out of the next,
+// and the breaking story appears only in the breaking strip.
+const shown = new Set([leadStory.id, breakingStory?.id].filter(Boolean));
+const pick = (stories) => {
+  stories.forEach((s) => shown.add(s.id));
+  return stories;
+};
+
+const secondary = pick(latest(2, [...shown]));
+const latestSix = pick(latest(6, [...shown]));
+
+// Each category gets its own arrangement, so the page does not repeat one grid four times.
+const SECTIONS = [
+  { slug: "politics", layout: "feature", count: 4 },
+  { slug: "business", layout: "trio", count: 3 },
+  { slug: "sports", layout: "feature-flip", count: 4 },
+  { slug: "entertainment", layout: "quad", count: 4 },
+].map((s) => ({ ...s, stories: pick(inCategory(s.slug, s.count, [...shown])) }));
+
+// A slim red strip, only while there is a breaking story
+function BreakingStrip({ story }) {
   return (
-    <div className="container">
-      <Link to={articleLink(s)} className="breaking">
-        <span className="breaking__tag">
-          <span className="live-dot" />
-          Breaking
-        </span>
-        <span className="breaking__text">{s.title}</span>
-        <span className="breaking__time">{timeAgo(s.published)}</span>
-      </Link>
-    </div>
+    <Link to={articleLink(story)} className="breakbar">
+      <span className="breakbar__tag">
+        <span className="live-dot" />
+        Breaking news
+      </span>
+      <strong className="breakbar__text">{story.title}</strong>
+      <span className="breakbar__time">{timeAgo(story.published)}</span>
+    </Link>
   );
 }
 
-// ---------- Lists and cards ----------
-function PopularList() {
+function CategorySection({ slug, layout, stories }) {
+  if (!stories.length) return null;
+  const [first, ...rest] = stories;
+  const head = (
+    <BlockHead to={`/news?category=${slug}`} label="View more">
+      {categoryName(slug)}
+    </BlockHead>
+  );
+
+  if (layout === "feature" || layout === "feature-flip") {
+    return (
+      <section className="hsec">
+        {head}
+        <div className={`sec${layout === "feature-flip" ? " sec--flip" : ""}`}>
+          <LeadTile story={first} size="feature" />
+          <div className="rows">
+            {rest.map((s) => (
+              <RowTile key={s.id} story={s} />
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="popular">
-      <BlockHead>Popular</BlockHead>
-      <ol>
-        {popular(5).map((s, i) => (
+    <section className="hsec">
+      {head}
+      <div className={`grid ${layout === "trio" ? "grid--3" : "grid--4"}`}>
+        {stories.map((s, i) => (
+          <GridTile key={s.id} story={s} summary={layout === "trio" && i === 0} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// A ranking, so these stories may also appear above
+function MostRead() {
+  return (
+    <section className="hsec">
+      <BlockHead>Most read</BlockHead>
+      <ol className="mostread">
+        {popular(6).map((s, i) => (
           <li key={s.id}>
             <Link to={articleLink(s)}>
-              <span className="popular__n">{i + 1}</span>
-              <span className="popular__text">
-                <strong>{s.title}</strong>
+              <span className="mostread__n">{i + 1}</span>
+              <span className="mostread__text">
                 <small>{categoryName(s.category)}</small>
+                <strong>{s.title}</strong>
               </span>
             </Link>
           </li>
@@ -58,132 +107,45 @@ function PopularList() {
   );
 }
 
-function Lead({ story }) {
-  return (
-    <Link to={articleLink(story)} className="lead">
-      <Cover story={story} eager sizes="(max-width: 720px) 100vw, 600px" className="lead__cover" />
-      <span className="lead__shade" />
-      <span className="lead__text">
-        <span className="chip">{categoryName(story.category)}</span>
-        <strong>{story.title}</strong>
-        <span className="meta">
-          <span>{timeAgo(story.published)}</span>
-          <span>{story.readMins} min read</span>
-        </span>
-      </span>
-    </Link>
-  );
-}
-
-function SideStory({ story }) {
-  return (
-    <Link to={articleLink(story)} className="side">
-      <Cover story={story} sizes="140px" className="side__cover" />
-      <span className="side__text">
-        <small>{categoryName(story.category)}</small>
-        <strong>{story.title}</strong>
-        <span className="meta">
-          <span>{timeAgo(story.published)}</span>
-        </span>
-      </span>
-    </Link>
-  );
-}
-
-function LatestList({ stories }) {
-  return (
-    <section className="latest">
-      <BlockHead to="/news">Latest</BlockHead>
-      <ul>
-        {stories.map((s) => (
-          <li key={s.id}>
-            <Link to={articleLink(s)}>
-              <span className="latest__time">{timeAgo(s.published)}</span>
-              <strong>{s.title}</strong>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </section>
-  );
-}
-
-function CategoryRow({ slug }) {
-  return (
-    <section className="rowsec">
-      <BlockHead to={`/news?category=${slug}`}>{categoryName(slug)}</BlockHead>
-      <div className="rowsec__grid">
-        {inCategory(slug, 4).map((s) => (
-          <Card key={s.id} story={s} />
-        ))}
-      </div>
-    </section>
-  );
-}
-
-// ---------- The page ----------
 export default function Home() {
-  const { radio } = useOnAir();
-  const lead = leadStory;
-  const sideStories = latest(2, [lead.id]);
-  const latestStories = latest(7);
-
   return (
     <>
-      <Breaking />
+      <h1 className="sr-only">ITV: live television, radio and the latest news</h1>
 
-      <div className="container front">
-        <div className="front__col">
-          <div className="live-wrap">
-            <LiveCard />
-          </div>
-          <PopularList />
-        </div>
+      <div className="container hmain">
+        <LivePanel />
+        {breakingStory && <BreakingStrip story={breakingStory} />}
 
-        <div className="front__col">
-          <Lead story={lead} />
-          <div className="sides">
-            {sideStories.map((s) => (
-              <SideStory key={s.id} story={s} />
-            ))}
-          </div>
-        </div>
-
-        <div className="front__col">
-          <LatestList stories={latestStories} />
-          <section className="radiopanel">
-            <img
-              className="radiopanel__bg"
-              {...photoProps("radio", [480, 800])}
-              alt=""
-              sizes="300px"
-              loading="lazy"
-              decoding="async"
-            />
-            <span className="radiopanel__shade" />
-            <p className="radiopanel__label">On air now</p>
-            <OnAirCard channel="radio" data={radio} />
-          </section>
-        </div>
-      </div>
-
-      <div className="container">
-        <VideoSection />
-
-        {["politics", "business", "sports", "entertainment"].map((slug) => (
-          <CategoryRow key={slug} slug={slug} />
-        ))}
-
-        <section className="rowsec">
-          <BlockHead>More from ITV News</BlockHead>
-          <div className="chips">
-            {categories.map((c) => (
-              <Link key={c.slug} to={`/news?category=${c.slug}`} className="chips__item">
-                {c.name}
-              </Link>
+        <section className="top" aria-label="Top stories">
+          <LeadTile story={leadStory} />
+          <div className="top__side">
+            {secondary.map((s) => (
+              <SideTile key={s.id} story={s} />
             ))}
           </div>
         </section>
+
+        <section className="hsec">
+          <BlockHead to="/news" label="View all news">
+            Latest news
+          </BlockHead>
+          <div className="grid grid--3">
+            {latestSix.map((s) => (
+              <GridTile key={s.id} story={s} />
+            ))}
+          </div>
+        </section>
+
+        {SECTIONS.map((s) => (
+          <CategorySection key={s.slug} {...s} />
+        ))}
+      </div>
+
+      <VideoSection />
+      <RadioBand />
+
+      <div className="container hmain">
+        <MostRead />
       </div>
     </>
   );

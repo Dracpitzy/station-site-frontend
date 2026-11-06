@@ -1,34 +1,48 @@
 import { useState } from "react";
-import { BlockHead } from "./StoryCards";
 import VideoCard from "./VideoCard";
 import VideoModal from "./VideoModal";
 import { latestVideos, watchAgain } from "../data/videos";
 import { timeAgo } from "../data/news";
 import "../styles/video.css";
 
-// The two video rows on the front page. Choosing a video opens it in a pop-up player.
+const TABS = [
+  { key: "latest", label: "Latest videos" },
+  { key: "again", label: "Watch again" },
+];
+
+// "Watch on ITV": a dark band with the videos. Two tabs switch between the latest videos and the
+// programmes to watch again. Choosing a video opens it in a pop-up player.
 export default function VideoSection() {
+  const [tab, setTab] = useState("latest");
   const [playing, setPlaying] = useState(null); // { video, meta }
 
   const play = (video, meta) => setPlaying({ video, meta });
+  const list = tab === "latest" ? latestVideos : watchAgain;
 
   return (
     <>
-      <section className="rowsec">
-        <BlockHead>Latest videos</BlockHead>
-        <div className="rowsec__grid">
-          {latestVideos.map((v) => (
-            <VideoCard key={v.id} video={v} label={timeAgo(v.published)} onPlay={(video) => play(video, timeAgo(video.published))} />
-          ))}
-        </div>
-      </section>
+      <section className="watch" aria-label="Watch on ITV">
+        <div className="container">
+          <div className="watch__head">
+            <h2>Watch on ITV</h2>
+            <div className="watch__tabs" role="group" aria-label="Choose videos">
+              {TABS.map((t) => (
+                <button key={t.key} type="button" aria-pressed={tab === t.key} onClick={() => setTab(t.key)}>
+                  {t.label}
+                </button>
+              ))}
+            </div>
+          </div>
 
-      <section className="rowsec">
-        <BlockHead>Watch again</BlockHead>
-        <div className="rowsec__grid">
-          {watchAgain.map((v) => (
-            <VideoCard key={v.id} video={v} label={v.when} onPlay={(video) => play(video, `Aired ${video.when.toLowerCase()}`)} />
-          ))}
+          <div className="watch__grid">
+            {list.map((v) =>
+              tab === "latest" ? (
+                <VideoCard key={v.id} video={v} label={timeAgo(v.published)} onPlay={(video) => play(video, timeAgo(video.published))} />
+              ) : (
+                <VideoCard key={v.id} video={v} label={v.when} onPlay={(video) => play(video, `Aired ${video.when.toLowerCase()}`)} />
+              )
+            )}
+          </div>
         </div>
       </section>
 
