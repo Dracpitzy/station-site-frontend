@@ -1,0 +1,65 @@
+/* ---------- Live TV on a phone: a slim strip, with a player that opens underneath ---------- */
+.livestrip { margin-top: 0.9rem; overflow: hidden; border-radius: var(--radius-md); background: var(--navy); color: var(--white); }
+
+.livestrip__bar { display: flex; align-items: center; gap: 0.7rem; min-height: 72px; padding: 0.6rem 0.7rem 0.6rem 0.6rem; }
+.livestrip__thumb { flex: none; width: 80px; aspect-ratio: 16 / 9; overflow: hidden; border-radius: var(--radius-sm); background: #000; }
+.livestrip__thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.livestrip__text { display: grid; flex: 1; gap: 0.1rem; min-width: 0; }
+.livestrip__kicker {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+.livestrip__text strong,
+.livestrip__next { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.livestrip__text strong { font-family: var(--font-display); font-size: 1.2rem; font-weight: 700; line-height: 1.05; }
+.livestrip__next { color: rgba(255, 255, 255, 0.72); font-size: 0.75rem; }
+
+.livestrip__watch {
+  flex: none;
+  min-height: 44px;
+  padding: 0 0.95rem;
+  border-radius: var(--radius-pill);
+  background: var(--white);
+  color: var(--blue-700);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.livestrip__watch:active { transform: scale(0.96); }
+
+/* The player that opens underneath */
+.livestrip__player { border-top: 1px solid rgba(255, 255, 255, 0.12); }
+.livestrip__screen { position: relative; aspect-ratio: 16 / 9; background: #000; }
+.livestrip__slot { position: absolute; inset: 0; }
+.livestrip__error {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 0.7rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.72);
+  font-weight: 600;
+  text-align: center;
+}
+.livestrip__controls { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.7rem; }
+.livestrip__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 0.9rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.12);
+  color: var(--white);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.livestrip__page { margin-left: auto; padding: 0.6rem 0.3rem; color: rgba(255, 255, 255, 0.85); font-size: 0.85rem; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }

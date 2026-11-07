@@ -43,6 +43,7 @@ let state = {
   started: false, // a first frame has been shown in this session
   playing: false,
   auto: false, // started by itself (muted, on the front page) and not yet touched by the visitor
+  slotted: false, // a page is showing the video, so the mini-player does not need to
   ...loadPrefs(),
   pip: false,
   levels: [], // [{ index, height }]
@@ -356,12 +357,14 @@ export const tvPlayer = {
   // where the video lives. passive: true means "just showing it", not "watching it".
   attach(el, opts) {
     slot = el;
+    set({ slotted: true });
     if (!opts || !opts.passive) engage();
     place();
   },
   release(el) {
     if (slot !== el) return;
     slot = null;
+    set({ slotted: false });
     // Leaving the front page while the video was only autoplaying: switch it off.
     if (state.auto) stop();
     place();

@@ -102,22 +102,55 @@
 .mostread strong { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; line-height: 1.1; transition: color var(--dur-fast); }
 .mostread a:hover strong { color: var(--blue-600); }
 
-/* ---------- Until the phone layout is done, narrower screens simply stack ---------- */
-@media (max-width: 1100px) {
+/* ---------- Tablet: 701 to 1000px ----------
+   The lead takes the full width with the two smaller stories side by side beneath it. Grids use two columns. */
+@media (max-width: 1000px) {
+  .grid--3,
   .grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .top { grid-template-columns: 1fr; gap: 1.8rem; }
+  .top__side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.8rem;
+    padding: 1.8rem 0 0;
+    border-top: 1px solid var(--rule);
+    border-left: 0;
+  }
+  .top__side .tile + .tile { padding-top: 0; padding-left: 1.8rem; border-top: 0; border-left: 1px solid var(--rule); }
 }
 @media (max-width: 900px) {
-  .top,
   .sec,
   .sec--flip { grid-template-columns: 1fr; }
   .sec--flip > .tile { order: 0; }
-  .top__side { padding-left: 0; border-left: 0; }
-  .grid--3 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .mostread { grid-template-columns: 1fr; }
-  .breakbar__text { white-space: normal; font-size: 1.2rem; }
-  .breakbar__time { display: none; }
 }
-@media (max-width: 560px) {
-  .grid--3,
-  .grid--4 { grid-template-columns: 1fr; }
+
+/* ---------- Phone: up to 700px ---------- */
+@media (max-width: 700px) {
+  .hsec { margin-top: 2.2rem; }
+  .top { margin-top: 1.4rem; }
+
+  /* Breaking news: a short label, and the headline cut to two lines */
+  .breakbar { align-items: flex-start; gap: 0.7rem; padding: 0.6rem 0.8rem 0.6rem 0.6rem; }
+  .breakbar__tag { padding: 0.3rem 0.6rem; font-size: 0.62rem; }
+  .breakbar__text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    font-size: 1.15rem;
+    line-height: 1.1;
+    white-space: normal;
+  }
+  .breakbar__time { display: none; }
+
+  /* Supporting stories under a featured one */
+  .rows--after { margin-top: 1.2rem; border-top: 1px solid var(--rule); }
+  .rows--after .tile--row:first-child { padding-top: 1rem; border-top: 0; }
+  .pgrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem 1rem; margin-top: 1.4rem; }
+
+  /* The rows are the whole latest list, so each gets a divider */
+  .rows--latest .tile--row:first-child { padding-top: 0; }
+
+  .mostread { grid-template-columns: 1fr; }
+  .mostread__n { font-size: 2.1rem; min-width: 1.8rem; }
+  .mostread strong { font-size: 1.2rem; }
 }

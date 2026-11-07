@@ -127,8 +127,10 @@
 .livepanel__next { color: rgba(255, 255, 255, 0.75); font-size: var(--text-sm); }
 .livepanel__next strong { color: var(--white); }
 
-/* Until the phone layout is done, a narrow screen stacks the picture above the text */
-@media (max-width: 900px) {
-  .livepanel { grid-template-columns: 1fr; }
-  .livepanel__info { padding: 1.2rem 1.2rem 1.4rem; }
+/* Tablet: the panel stays horizontal, a little tighter. Phones use the slim strip instead (LiveStrip). */
+@media (max-width: 1000px) {
+  .livepanel { grid-template-columns: minmax(0, 42fr) minmax(0, 58fr); }
+  .livepanel__info { gap: 0.4rem; padding: 1rem 1.3rem; }
+  .livepanel__info h2 { font-size: clamp(1.6rem, 1.1rem + 1.6vw, 2.2rem); }
+  .livepanel__desc { display: none; }
 }

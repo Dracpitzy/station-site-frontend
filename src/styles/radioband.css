@@ -78,7 +78,20 @@
 .radioband__more { color: rgba(255, 255, 255, 0.85); font-size: var(--text-sm); font-weight: 600; }
 .radioband__more:hover { color: var(--white); text-decoration: underline; }
 
-/* Until the phone layout is done, a narrow screen stacks the band's parts */
-@media (max-width: 900px) {
-  .radioband__row { grid-template-columns: 1fr; gap: 1.2rem; }
+/* Tablet: the programme and the button share a line, the progress sits under them */
+@media (max-width: 1000px) {
+  .radioband__row { grid-template-columns: minmax(0, 1fr) auto; gap: 1.2rem 1.5rem; }
+  .radioband__mid { grid-column: 1 / -1; grid-row: 2; }
+}
+
+/* Phone: a compact band. The programme first, then the progress, then one full-width button. */
+@media (max-width: 700px) {
+  .radioband { min-height: 0; margin-top: 3rem; padding-block: 2.2rem; }
+  .radioband__glass { padding-block: 1.3rem; }
+  .radioband__row { grid-template-columns: 1fr; gap: 1rem; }
+  .radioband__mid { grid-column: auto; grid-row: auto; }
+  .radioband__id h2 { font-size: 1.8rem; }
+  .radioband__actions { justify-items: stretch; gap: 0.6rem; }
+  .radioband__actions .btn { justify-content: center; width: 100%; min-height: 48px; }
+  .radioband__more { padding-block: 0.4rem; text-align: center; }
 }

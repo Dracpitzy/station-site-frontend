@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import LivePanel from "../components/LivePanel";
+import LiveStrip from "../components/LiveStrip";
 import RadioBand from "../components/RadioBand";
 import VideoSection from "../components/VideoSection";
 import { GridTile, LeadTile, RowTile, SideTile } from "../components/Tiles";
 import { BlockHead, articleLink } from "../components/StoryCards";
+import { useIsPhone } from "../hooks/useIsPhone";
 import {
   breakingStory,
   categoryName,
@@ -48,7 +50,7 @@ function BreakingStrip({ story }) {
   );
 }
 
-function CategorySection({ slug, layout, stories }) {
+function CategorySection({ slug, layout, stories, phone }) {
   if (!stories.length) return null;
   const [first, ...rest] = stories;
   const head = (
@@ -56,8 +58,33 @@ function CategorySection({ slug, layout, stories }) {
       {categoryName(slug)}
     </BlockHead>
   );
+  const withRows = layout === "feature" || layout === "feature-flip";
 
-  if (layout === "feature" || layout === "feature-flip") {
+  // On a phone every category is one featured story with a full-width picture. Under it come either
+  // compact rows or a two-column compact grid, depending on the category.
+  if (phone) {
+    return (
+      <section className="hsec">
+        {head}
+        <LeadTile story={first} size="feature" />
+        {withRows ? (
+          <div className="rows rows--after">
+            {rest.map((s) => (
+              <RowTile key={s.id} story={s} />
+            ))}
+          </div>
+        ) : (
+          <div className="pgrid">
+            {rest.slice(0, 2).map((s) => (
+              <GridTile key={s.id} story={s} />
+            ))}
+          </div>
+        )}
+      </section>
+    );
+  }
+
+  if (withRows) {
     return (
       <section className="hsec">
         {head}
@@ -86,12 +113,12 @@ function CategorySection({ slug, layout, stories }) {
 }
 
 // A ranking, so these stories may also appear above
-function MostRead() {
+function MostRead({ count }) {
   return (
     <section className="hsec">
       <BlockHead>Most read</BlockHead>
       <ol className="mostread">
-        {popular(6).map((s, i) => (
+        {popular(count).map((s, i) => (
           <li key={s.id}>
             <Link to={articleLink(s)}>
               <span className="mostread__n">{i + 1}</span>
@@ -108,36 +135,53 @@ function MostRead() {
 }
 
 export default function Home() {
+  const phone = useIsPhone();
+
   return (
     <>
       <h1 className="sr-only">ITV: live television, radio and the latest news</h1>
 
       <div className="container hmain">
-        <LivePanel />
+        {phone ? <LiveStrip /> : <LivePanel />}
         {breakingStory && <BreakingStrip story={breakingStory} />}
 
-        <section className="top" aria-label="Top stories">
-          <LeadTile story={leadStory} />
-          <div className="top__side">
-            {secondary.map((s) => (
-              <SideTile key={s.id} story={s} />
-            ))}
-          </div>
-        </section>
+        {phone ? (
+          <section className="top" aria-label="Top story">
+            <LeadTile story={leadStory} />
+          </section>
+        ) : (
+          <section className="top" aria-label="Top stories">
+            <LeadTile story={leadStory} />
+            <div className="top__side">
+              {secondary.map((s) => (
+                <SideTile key={s.id} story={s} />
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="hsec">
           <BlockHead to="/news" label="View all news">
             Latest news
           </BlockHead>
-          <div className="grid grid--3">
-            {latestSix.map((s) => (
-              <GridTile key={s.id} story={s} />
-            ))}
-          </div>
+          {phone ? (
+            // On a phone the two stories that sit beside the lead on a wide screen head the list instead
+            <div className="rows rows--latest">
+              {[...secondary, ...latestSix].map((s) => (
+                <RowTile key={s.id} story={s} />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid--3">
+              {latestSix.map((s) => (
+                <GridTile key={s.id} story={s} />
+              ))}
+            </div>
+          )}
         </section>
 
         {SECTIONS.map((s) => (
-          <CategorySection key={s.slug} {...s} />
+          <CategorySection key={s.slug} {...s} phone={phone} />
         ))}
       </div>
 
@@ -145,7 +189,7 @@ export default function Home() {
       <RadioBand />
 
       <div className="container hmain">
-        <MostRead />
+        <MostRead count={phone ? 5 : 6} />
       </div>
     </>
   );

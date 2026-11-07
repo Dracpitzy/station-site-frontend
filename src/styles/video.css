@@ -20,6 +20,24 @@
 .watch .vcard__hit { border-radius: var(--radius-sm); }
 @media (max-width: 1100px) { .watch__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
+/* Phone: the videos become a row you swipe along, each card about three quarters of the screen wide */
+@media (max-width: 700px) {
+  .watch { margin-top: 3rem; padding-block: 2.2rem; }
+  .watch__tabs button { padding-block: 0.7rem; }
+  .watch__grid {
+    display: flex;
+    gap: 1rem;
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+    overflow-x: auto;
+    scroll-padding-inline: 1.25rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .watch__grid::-webkit-scrollbar { display: none; }
+  .watch__grid > .vcard { flex: 0 0 76%; scroll-snap-align: start; }
+}
+
 /* ---------- Video cards ---------- */
 .vcard { position: relative; display: grid; gap: 0.5rem; align-content: start; }
 .vcard__thumb { position: relative; }

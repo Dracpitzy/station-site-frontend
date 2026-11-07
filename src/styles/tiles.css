@@ -42,6 +42,28 @@
 .tile--row .cover.tile__img { aspect-ratio: 4 / 3; }
 .tile--row .tile__title { font-size: 1.2rem; }
 
+/* Phone: smaller condensed headlines, and a narrower thumbnail on rows */
+@media (max-width: 700px) {
+  .tile--lead .tile__title { font-size: 2.05rem; }
+  .tile--lead .tile__summary {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 1rem;
+  }
+  .tile--feature .tile__title { font-size: 1.7rem; }
+  .tile--feature .tile__summary {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .tile--grid .tile__title { font-size: 1.15rem; }
+  .tile--row { grid-template-columns: 108px minmax(0, 1fr); gap: 0.85rem; }
+  .tile--row .tile__title { font-size: 1.12rem; line-height: 1.1; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .tile:hover .cover > * { transform: none; }
 }

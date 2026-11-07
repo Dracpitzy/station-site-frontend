@@ -27,9 +27,9 @@ export default function MiniPlayer() {
     return () => tvPlayer.setMiniSlot(null);
   }, []);
 
-  // A video that is only autoplaying on the front page never gets a mini-player.
-  // It also stays off the Contact page, so it can never cover the form.
-  const tvVisible = tv.session && !tv.auto && pathname !== "/live" && pathname !== "/contact";
+  // A video that is only autoplaying on the front page never gets a mini-player, and neither does
+  // a video that a page is already showing. It also stays off the Contact page, so it can never cover the form.
+  const tvVisible = tv.session && !tv.auto && !tv.slotted && pathname !== "/live" && pathname !== "/contact";
   const radioVisible = radio.session && radio.status !== "offline" && pathname !== "/radio" && pathname !== "/contact";
   const visible = tvVisible || radioVisible;
   const radioMode = radioVisible && !tvVisible;
