@@ -1,49 +1,100 @@
-/* ---------- News page ---------- */
+/* ---------- News page ----------
+   Section layouts (.top, .grid, .sec, .rows, .mostread) are shared with the front page in home.css. */
 
-/* Category chips. They scroll sideways on a phone. */
-.newschips {
+.newspage { padding-bottom: var(--space-6); }
+
+/* ---------- Header ---------- */
+.newshead { padding: 2.4rem 0 1.2rem; }
+.newshead h1 {
+  font-size: clamp(3.2rem, 2rem + 5.5vw, 6rem);
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+.newshead p { max-width: 60ch; margin-top: 0.7rem; color: var(--ink-soft); font-size: 1.1rem; }
+.newshead .newshead__meta { margin-top: 0.4rem; color: var(--blue-600); font-size: var(--text-sm); font-weight: 700; }
+
+/* ---------- Category tabs ---------- */
+.newstabs {
   display: flex;
-  gap: 0.5rem;
-  margin-top: 1rem;
-  padding-bottom: 0.4rem;
+  gap: 1.7rem;
   overflow-x: auto;
+  border-bottom: 1px solid var(--rule);
   scroll-snap-type: x proximity;
   scrollbar-width: none;
 }
-.newschips::-webkit-scrollbar { display: none; }
-.newschips__item {
+.newstabs::-webkit-scrollbar { display: none; }
+.newstabs a {
+  position: relative;
   flex: none;
-  padding: 0.55rem 1.05rem;
-  border-radius: var(--radius-pill);
-  background: var(--blue-50);
-  color: var(--blue-700);
+  padding: 0.95rem 0;
+  color: var(--ink-soft);
   font-size: var(--text-sm);
   font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   scroll-snap-align: start;
-  transition: background var(--dur-fast), color var(--dur-fast), box-shadow var(--dur) var(--ease);
+  transition: color var(--dur-fast);
 }
-.newschips__item:hover { background: var(--blue-100); }
-.newschips__item[aria-current="true"] {
-  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
-  color: var(--white);
-  box-shadow: 0 6px 18px rgba(21, 89, 230, 0.35);
-}
-
-/* The grid of stories. The newest one is wide. */
-.newsgrid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 1.5rem 1.1rem;
-  margin-top: 1.2rem;
+.newstabs a:hover,
+.newstabs a[aria-current="true"] { color: var(--ink); }
+.newstabs a[aria-current="true"]::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 3px;
+  background: var(--blue-600);
 }
 
-.newsmore { display: grid; justify-items: center; gap: 0.7rem; margin: 2.2rem 0 0.5rem; }
-.newsmore p { font-size: var(--text-sm); color: var(--ink-soft); }
+/* ---------- Featured block ---------- */
+.newstop { margin-top: 2.2rem; }
 
-@media (max-width: 1100px) {
-  .newsgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+/* ---------- Latest reports, with Most read beside them ---------- */
+.nlatest { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 3rem; align-items: start; }
+.nlatest--wide { grid-template-columns: minmax(0, 1fr); }
+.nside { padding-left: 2.2rem; border-left: 1px solid var(--rule); }
+.nside__title {
+  margin-bottom: 0.2rem;
+  font-family: var(--font);
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
 }
-@media (max-width: 520px) {
-  .newsgrid { grid-template-columns: 1fr; }
-  .card--wide { grid-column: auto; }
+.nside .mostread { grid-template-columns: 1fr; }
+.nside .mostread li:first-child { border-top: 0; }
+.nside .mostread a { gap: 0.9rem; padding-block: 0.95rem; }
+.nside .mostread__n { min-width: 1.6rem; font-size: 2rem; }
+.nside .mostread strong { font-size: 1.15rem; }
+
+/* ---------- Load more ---------- */
+.newsmore { display: grid; justify-items: center; gap: 0.8rem; margin-top: 2.4rem; }
+.newsmore p { color: var(--ink-soft); font-size: var(--text-sm); }
+.newsmore__btn {
+  min-height: 48px;
+  padding: 0 1.9rem;
+  border-radius: var(--radius-pill);
+  box-shadow: inset 0 0 0 2px var(--blue-600);
+  color: var(--blue-700);
+  font-weight: 700;
+  transition: background var(--dur-fast), color var(--dur-fast), transform var(--dur-fast) var(--ease);
+}
+.newsmore__btn:hover { background: var(--blue-600); color: var(--white); }
+.newsmore__btn:active { transform: scale(0.97); }
+
+/* ---------- Tablet and phone: Most read moves under the list ---------- */
+@media (max-width: 1000px) {
+  .nlatest { grid-template-columns: minmax(0, 1fr); gap: 2.6rem; }
+  .nside { padding-left: 0; border-left: 0; }
+}
+@media (max-width: 700px) {
+  .newshead { padding-top: 1.6rem; }
+  .newshead p { font-size: 1rem; }
+  .newstabs { margin-inline: -1.25rem; padding-inline: 1.25rem; gap: 1.4rem; scroll-padding-inline: 1.25rem; }
+  .newstabs a { padding-block: 0.85rem; }
+  .newstop { margin-top: 1.6rem; }
+  .newsmore__btn { width: 100%; }
 }
