@@ -1,0 +1,32 @@
+/* ---------- The desktop mini-player: its writing follows what is behind the glass ----------
+   Over a light page the writing and buttons turn dark, over a dark one they stay white.
+   (On a phone the mini-player is a solid navy strip, so it is always white.) */
+
+@media (min-width: 861px) {
+  body .mini.lg {
+    --mini-ink: var(--white);
+    --mini-hover: rgba(255, 255, 255, 0.2);
+    color: var(--mini-ink);
+  }
+  body .mini.lg.mini--light {
+    --mini-ink: #0a1a3a;
+    --mini-hover: rgba(10, 26, 58, 0.12);
+    /* Clear glass over a white page has no edge, so give it a thin one */
+    outline: 1px solid rgba(10, 26, 58, 0.16);
+    outline-offset: -1px;
+  }
+
+  body .mini.lg .mini__btn,
+  body .mini.lg .mini__info strong,
+  body .mini.lg .mini__live {
+    color: var(--mini-ink);
+    transition: color 0.25s ease, background var(--dur-fast), transform 0.3s var(--ease);
+  }
+  body .mini.lg .mini__btn:hover { background: var(--mini-hover); }
+
+  /* On article pages the pill shrinks to LIVE, play / pause and close, so it never sits over the reading text */
+  body .mini.lg.mini--compact { width: auto; }
+  .mini--compact .mini__video,
+  .mini--compact .mini__info strong { display: none; }
+  .mini--compact .mini__info { flex: none; padding-inline: 0.8rem 0.3rem; }
+}

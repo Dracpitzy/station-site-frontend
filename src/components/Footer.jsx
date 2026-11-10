@@ -31,7 +31,7 @@ const columns = [
 
 export default function Footer() {
   return (
-    <footer className="footer">
+    <footer className="footer" data-tone="dark">
       <div className="container footer__grid">
         <div className="footer__brand">
           <h3>{station.name}</h3>

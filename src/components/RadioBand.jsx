@@ -23,7 +23,7 @@ export default function RadioBand() {
   const active = ACTIVE.includes(player.status);
 
   return (
-    <section className="radioband" aria-label="ITV Radio">
+    <section className="radioband" aria-label="ITV Radio" data-tone="dark">
       <img className="radioband__bg" {...photo} alt="" sizes="100vw" loading="lazy" decoding="async" />
       <div className="radioband__shade" aria-hidden="true" />
 

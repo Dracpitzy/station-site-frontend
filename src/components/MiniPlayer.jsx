@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useBackdropTone } from "../hooks/useBackdropTone";
 import { useOnAir } from "../hooks/useOnAir";
 import { tvPlayer, useTvPlayer } from "../player/tv";
 import { radioPlayer, useRadioPlayer } from "../player/radio";
@@ -8,6 +9,20 @@ import { LiquidGlass } from "./liquid-glass/LiquidGlass";
 import { Icon } from "./Icons";
 import "../styles/player.css";
 import "../styles/mini-radio.css";
+import "../styles/mini-tone.css";
+
+// True on a screen wide enough for the floating glass pill. Narrower screens get the docked navy strip.
+function useWide() {
+  return useSyncExternalStore(
+    (notify) => {
+      const query = window.matchMedia("(min-width: 861px)");
+      query.addEventListener("change", notify);
+      return () => query.removeEventListener("change", notify);
+    },
+    () => window.matchMedia("(min-width: 861px)").matches,
+    () => true
+  );
+}
 
 const radioCover = photoProps("radio", [160, 320, 480]);
 const RADIO_ACTIVE = ["playing", "buffering", "connecting", "reconnecting"];
@@ -21,6 +36,7 @@ export default function MiniPlayer() {
   const radio = useRadioPlayer();
   const onAir = useOnAir();
   const slotRef = useRef(null);
+  const rowRef = useRef(null);
 
   useEffect(() => {
     tvPlayer.setMiniSlot(slotRef.current);
@@ -34,6 +50,13 @@ export default function MiniPlayer() {
   const visible = tvVisible || radioVisible;
   const radioMode = radioVisible && !tvVisible;
 
+  // On a wide screen the pill is clear glass, so its writing turns dark over a light page and white over a dark one.
+  // On a phone it is a solid navy strip, so there is nothing to follow.
+  const wide = useWide();
+  const tone = useBackdropTone(rowRef, visible && wide, pathname);
+  // On article pages it shrinks, so it never sits over the reading text
+  const compact = wide && pathname.startsWith("/news/");
+
   const player = radioMode ? radioPlayer : tvPlayer;
   const playing = radioMode
     ? RADIO_ACTIVE.includes(radio.status)
@@ -44,10 +67,10 @@ export default function MiniPlayer() {
     <LiquidGlass
       preset="floatingPlayer"
       radius="pill"
-      className={`mini${visible ? " is-visible" : ""}`}
+      className={`mini${visible ? " is-visible" : ""}${wide ? ` mini--${tone}` : ""}${compact ? " mini--compact" : ""}`}
       aria-hidden={!visible}
     >
-      <div className="mini__row">
+      <div className="mini__row" ref={rowRef}>
         {/* The video slot stays in the page even while the radio is showing, so the video always has a place to go */}
         <Link to="/live" className="mini__video" aria-label="Open live TV" hidden={radioMode}>
           <span className="mini__slot" ref={slotRef} />
