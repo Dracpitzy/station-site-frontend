@@ -1,116 +1,206 @@
-/* ---------- About page ---------- */
+/* ---------- About page ----------
+   A page of long bands that alternate between dark and light. Headlines are Barlow Condensed. Champagne is
+   only ever a thin rule or a small label on a dark band. */
 
-.about__heading { margin-bottom: var(--space-5); font-size: var(--text-2xl); }
+.about { overflow-x: clip; margin-bottom: calc(-1 * var(--space-8)); }
 
-/* ---------- Our story ---------- */
-.about__story {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: var(--space-7);
-  align-items: center;
+.alabel {
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blue-600);
 }
-.about__text h2 { margin-bottom: 1rem; font-size: var(--text-2xl); }
-.about__text p { max-width: 58ch; color: var(--ink-soft); }
-.about__text p + p { margin-top: 1rem; }
+.alabel--gold { color: var(--champagne); }
 
-.about__photo {
+.abtn--ghost { background: rgba(255, 255, 255, 0.16); color: var(--white); }
+.abtn--ghost:hover { background: rgba(255, 255, 255, 0.28); }
+
+/* Fade-up as each band scrolls into view. Nothing is hidden until the page's script has switched this on. */
+.about[data-motion="on"] [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s ease, transform 0.7s var(--ease);
+}
+.about[data-motion="on"] [data-reveal].is-in { opacity: 1; transform: none; }
+
+/* ---------- Opening ---------- */
+.ahero {
   position: relative;
-  aspect-ratio: 4 / 3;
+  isolation: isolate;
+  display: grid;
+  align-items: end;
+  min-height: min(70svh, 640px);
+  padding-block: 4rem 3.5rem;
+  color: var(--white);
+  background: var(--midnight);
   overflow: hidden;
-  border-radius: var(--radius-lg);
-  background: var(--blue-100);
-  box-shadow: var(--shadow-lg);
 }
-.about__photo img { width: 100%; height: 100%; object-fit: cover; }
-.about__photo figcaption {
+.ahero__bg { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 60% 40%; }
+.ahero__shade {
   position: absolute;
-  left: 1rem;
-  bottom: 1rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.45rem 0.95rem;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, rgba(7, 20, 38, 0.92) 0%, rgba(10, 23, 71, 0.72) 45%, rgba(10, 23, 71, 0.28) 100%),
+    linear-gradient(0deg, rgba(7, 20, 38, 0.7), transparent 40%);
+}
+.ahero__kicker { color: var(--champagne); font-size: 0.8rem; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; }
+.ahero h1 {
+  margin-top: 1rem;
+  font-size: clamp(3rem, 1.4rem + 7.2vw, 7.5rem);
+  font-weight: 800;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+.ahero h1 span { display: block; }
+.ahero__intro { max-width: 46ch; margin-top: 1.4rem; color: rgba(255, 255, 255, 0.86); font-size: 1.2rem; }
+.ahero__links { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.8rem; }
+
+/* ---------- Who we are ---------- */
+.awho { padding-block: var(--space-8); background: var(--warm-white); }
+.awho__grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 4rem; align-items: center; }
+.awho h2 { margin-top: 0.7rem; font-size: var(--text-2xl); line-height: 1; }
+.awho__text p:not(.alabel) { max-width: 52ch; margin-top: 1.1rem; color: var(--slate); font-size: 1.08rem; }
+.awho__photo { display: grid; gap: 0.6rem; }
+.awho__photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius-sm); background: var(--midnight); }
+.awho__photo figcaption { color: var(--ink-soft); font-size: 0.8125rem; }
+
+/* ---------- Mission and vision ---------- */
+.amission { padding-block: var(--space-8); background: var(--midnight); color: var(--white); }
+.amission__grid { display: grid; grid-template-columns: minmax(0, 1fr) 1px minmax(0, 1fr); gap: 3.5rem; align-items: start; }
+.amission__rule { align-self: stretch; background: var(--champagne); opacity: 0.55; }
+.amission h2 {
+  margin-top: 1rem;
+  font-size: clamp(2rem, 1.2rem + 2.6vw, 3.4rem);
+  line-height: 1.04;
+  text-wrap: balance;
+}
+
+/* ---------- Behind the broadcast ---------- */
+.abehind { padding-block: var(--space-8); }
+.abehind__head { display: grid; gap: 0.5rem; margin-bottom: 2rem; }
+.abehind__head h2 { font-size: var(--text-2xl); line-height: 1; }
+.abehind__head p { color: var(--ink-soft); font-size: 1.08rem; }
+.abehind__gallery { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 1.2rem; }
+.abehind__gallery figure { position: relative; overflow: hidden; border-radius: var(--radius-sm); background: var(--midnight); }
+.abehind__gallery img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.abehind__feature { min-height: 100%; aspect-ratio: 4 / 3; }
+.abehind__more { display: grid; grid-template-rows: 1fr 1fr; gap: 1.2rem; }
+.abehind__more figure { aspect-ratio: 16 / 9; }
+.abehind__gallery figcaption {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 2.4rem 1rem 0.8rem;
+  background: linear-gradient(0deg, rgba(7, 20, 38, 0.82), transparent);
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.achip {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+  padding: 0.22rem 0.65rem;
   border-radius: var(--radius-pill);
-  background: var(--white);
-  color: var(--blue-700);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  box-shadow: var(--shadow-md);
+  background: rgba(7, 20, 38, 0.82);
+  color: var(--white);
+  font-size: 0.66rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 /* ---------- Values ---------- */
-.about__values { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); }
-.about__value {
-  padding: var(--space-5);
-  border-radius: var(--radius-md);
-  background: var(--white);
-  box-shadow: var(--shadow-sm);
-}
-.about__num { color: var(--blue-500); font-size: var(--text-sm); font-weight: 800; letter-spacing: 0.14em; }
-.about__value h3 { margin: 0.5rem 0 0.6rem; font-size: var(--text-xl); }
-.about__value p { color: var(--ink-soft); }
+.avalues { padding-block: var(--space-8); background: var(--warm-white); }
+.avalues h2 { font-size: var(--text-2xl); line-height: 1; }
+.avalues__list { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.4rem 2rem; margin-top: 2.4rem; }
+.avalues__list li { padding-top: 1.2rem; border-top: 2px solid var(--champagne); }
+.avalues__n { color: var(--blue-600); font-family: var(--font-display); font-size: 1.2rem; font-weight: 800; letter-spacing: 0.1em; }
+.avalues h3 { margin-top: 0.5rem; font-size: 1.9rem; line-height: 1.05; }
+.avalues p { margin-top: 0.6rem; color: var(--slate); }
 
-/* ---------- Presenters ---------- */
-.about__team {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--space-4);
+/* ---------- People ---------- */
+.apeople { padding-block: var(--space-8); }
+.apeople__head { display: grid; gap: 0.5rem; margin-bottom: 2rem; }
+.apeople__head h2 { font-size: var(--text-2xl); line-height: 1; }
+.apeople__head p { color: var(--ink-soft); font-size: var(--text-sm); font-weight: 600; }
+.apeople__grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2.2rem 1.6rem; }
+.aperson h3 { margin-top: 0.8rem; font-size: 1.4rem; line-height: 1.05; }
+.aperson__role { margin-top: 0.2rem; color: var(--blue-600); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; }
+.aperson__bio {
+  margin-top: 0.4rem;
+  color: var(--ink-soft);
+  font-size: var(--text-sm);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-.about__person {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-start;
-  padding: 1.1rem 1.2rem;
-  border-radius: var(--radius-md);
-  background: var(--white);
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--dur) var(--ease), transform var(--dur) var(--ease);
-}
-.about__person:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
-.about__person h3 { font-size: 1.1rem; }
-.about__role { margin-top: 0.1rem; color: var(--blue-600); font-size: var(--text-sm); font-weight: 700; }
-.about__bio { margin-top: 0.4rem; color: var(--ink-soft); font-size: var(--text-sm); }
-
-/* There are no photos of the presenters yet, so each gets a coloured badge with their initials */
-.about__avatar {
-  flex: none;
+/* No portraits yet, so each person has a tile with their initials */
+.aperson__pic {
   display: grid;
   place-items: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  color: var(--white);
-  font-size: 1.05rem;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius-sm);
+  color: rgba(255, 255, 255, 0.92);
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 5vw, 4.6rem);
   font-weight: 800;
   letter-spacing: 0.02em;
 }
-.about__avatar--0 { background: linear-gradient(135deg, #2f78ff, #0f43b3); }
-.about__avatar--1 { background: linear-gradient(135deg, #5a97ff, #1559e6); }
-.about__avatar--2 { background: linear-gradient(135deg, #1559e6, #081f55); }
-.about__avatar--3 { background: linear-gradient(135deg, #8fbaff, #2f78ff); }
+.aperson__pic--0 { background: linear-gradient(160deg, var(--navy), var(--midnight)); }
+.aperson__pic--1 { background: linear-gradient(160deg, var(--slate), var(--midnight)); }
+.aperson__pic--2 { background: linear-gradient(160deg, var(--blue-700), var(--navy)); }
 
-/* ---------- Closing call to action ---------- */
-.about__cta-wrap { padding-bottom: var(--space-8); }
-.about__cta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-5);
-  padding: var(--space-6);
-  border-radius: var(--radius-lg);
-  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
-  color: var(--white);
-  box-shadow: 0 18px 44px rgba(21, 89, 230, 0.35);
+/* ---------- Closing ---------- */
+.aclose { position: relative; isolation: isolate; padding-block: var(--space-8); color: var(--white); background: var(--midnight); overflow: hidden; }
+.aclose__bg { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 30% 60%; }
+.aclose__shade { position: absolute; inset: 0; z-index: -1; background: linear-gradient(90deg, rgba(7, 20, 38, 0.92), rgba(10, 23, 71, 0.7)); }
+.aclose h2 { font-size: clamp(2.8rem, 1.4rem + 5.4vw, 5.8rem); font-weight: 800; line-height: 0.95; text-transform: uppercase; }
+.aclose p { max-width: 44ch; margin-top: 1rem; color: rgba(255, 255, 255, 0.85); font-size: 1.15rem; }
+.aclose__links { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.8rem; }
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1000px) {
+  .awho__grid { grid-template-columns: 1fr; gap: 2.4rem; }
+  .awho__photo img { aspect-ratio: 16 / 10; }
+  .amission__grid { grid-template-columns: 1fr; gap: 2rem; }
+  .amission__rule { width: 100%; height: 1px; }
+  .abehind__gallery { grid-template-columns: 1fr; }
+  .abehind__feature { aspect-ratio: 16 / 9; }
+  .abehind__more { grid-template-rows: none; grid-template-columns: 1fr 1fr; }
+  .avalues__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .apeople__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
-.about__cta h2 { font-size: var(--text-xl); }
-.about__cta p { margin-top: 0.3rem; opacity: 0.92; }
-.about__cta-actions { display: flex; flex-wrap: wrap; gap: 0.7rem; }
-.about__ghost { background: rgba(255, 255, 255, 0.18); color: var(--white); }
-.about__ghost:hover { background: rgba(255, 255, 255, 0.28); }
 
-@media (max-width: 860px) {
-  .about__story { grid-template-columns: 1fr; gap: var(--space-5); }
-  .about__photo { order: -1; }
-  .about__values { grid-template-columns: 1fr; }
+/* ---------- Phone ---------- */
+@media (max-width: 700px) {
+  .ahero { min-height: min(78svh, 560px); padding-block: 2.4rem 2.4rem; }
+  .ahero__intro { font-size: 1.05rem; }
+  .awho,
+  .amission,
+  .abehind,
+  .avalues,
+  .apeople,
+  .aclose { padding-block: 3.2rem; }
+  .awho__photo img { aspect-ratio: 4 / 3; }
+
+  /* The big photo, then a row to swipe along */
+  .abehind__more {
+    display: flex;
+    gap: 0.9rem;
+    margin-inline: -1.25rem;
+    padding-inline: 1.25rem;
+    overflow-x: auto;
+    scroll-padding-inline: 1.25rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .abehind__more::-webkit-scrollbar { display: none; }
+  .abehind__more figure { flex: 0 0 76%; scroll-snap-align: start; }
+
+  .avalues__list { grid-template-columns: 1fr; gap: 1.8rem; margin-top: 1.8rem; }
+  .apeople__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.8rem 1rem; }
+  .aperson h3 { font-size: 1.2rem; }
 }
