@@ -1,9 +1,12 @@
 import { useEffect, useRef } from "react";
+import "@fontsource-variable/source-serif-4"; // the reading font, downloaded only on article pages
 import { Link, useParams } from "react-router-dom";
 import Cover from "../components/Cover";
 import EmptyState from "../components/EmptyState";
 import ShareBar from "../components/ShareBar";
-import { BlockHead, Card } from "../components/StoryCards";
+import { BlockHead } from "../components/StoryCards";
+import { GridTile, RowTile } from "../components/Tiles";
+import { useIsPhone } from "../hooks/useIsPhone";
 import { articleBody } from "../data/articleBody";
 import { station } from "../data/config";
 import { photos } from "../data/images";
@@ -52,6 +55,7 @@ function useReadingProgress(bodyRef, barRef) {
 
 function ArticleView({ id }) {
   const story = getArticle(id);
+  const phone = useIsPhone();
   const bodyRef = useRef(null);
   const barRef = useRef(null);
   useReadingProgress(bodyRef, barRef);
@@ -72,10 +76,20 @@ function ArticleView({ id }) {
 
   const name = categoryName(story.category);
   const related = [
-    ...inCategory(story.category, 4, [story.id]),
+    ...inCategory(story.category, 3, [story.id]),
     ...latest(8, [story.id]).filter((a) => a.category !== story.category),
-  ].slice(0, 4);
-  const caption = story.photo ? photos[story.photo]?.alt : null;
+  ].slice(0, 3);
+
+  // A real photograph shows its description and where it came from. A placeholder says what it is,
+  // so nobody takes it for a picture of the event.
+  const caption = story.photo ? (
+    <>
+      <span>{photos[story.photo]?.alt}</span>
+      <span className="article__credit">Photo: Pexels</span>
+    </>
+  ) : (
+    <span className="article__credit">Placeholder photograph, not from this story</span>
+  );
 
   return (
     <article>
@@ -100,12 +114,15 @@ function ArticleView({ id }) {
             <span>{story.readMins} min read</span>
           </div>
 
-          <ShareBar title={story.title} />
+          {/* On a phone the share buttons wait until the end, so the top of the story stays short */}
+          <div className="article__sharetop">
+            <ShareBar title={story.title} />
+          </div>
         </header>
 
         <figure className="article__hero">
           <Cover story={story} eager sizes="(max-width: 960px) 100vw, 960px" />
-          {caption && <figcaption>{caption}</figcaption>}
+          <figcaption>{caption}</figcaption>
         </figure>
 
         <div className="article__col article__body" ref={bodyRef}>
@@ -119,13 +136,23 @@ function ArticleView({ id }) {
           <ShareBar title={story.title} />
         </div>
 
-        <section className="rowsec">
-          <BlockHead to={`/news?category=${story.category}`}>More from {name}</BlockHead>
-          <div className="rowsec__grid">
-            {related.map((s) => (
-              <Card key={s.id} story={s} showCategory />
-            ))}
-          </div>
+        <section className="arel">
+          <BlockHead to={`/news?category=${story.category}`} label={`More from ${name}`}>
+            Related stories
+          </BlockHead>
+          {phone ? (
+            <div className="arel__rows">
+              {related.map((s) => (
+                <RowTile key={s.id} story={s} />
+              ))}
+            </div>
+          ) : (
+            <div className="arel__grid">
+              {related.map((s) => (
+                <GridTile key={s.id} story={s} />
+              ))}
+            </div>
+          )}
         </section>
       </div>
     </article>
