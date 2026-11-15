@@ -34,14 +34,14 @@ const MORPH_MS = 420;
 const REST_MS = 3000; // with no scrolling or touching for this long, the rail slides away
 const EDGE_ZONE = 80; // moving the pointer this close to the left edge brings it back
 
-// Exceptionally clear glass: almost no tint or blur, thick convex edges and a bright specular rim.
+// Exceptionally clear glass: almost no tint or blur, thick convex edges and only a faint rim.
 const INDICATOR = {
   radius: 20,
   thickness: 38,
   bezel: 19,
   ior: 2.4,
   blur: 0.3,
-  specular: 0.7,
+  specular: 0.3,
   tint: 0.01,
   shadow: 0.4,
   saturation: 1.3,
@@ -362,13 +362,7 @@ function playMorph(first, parts, index, mode) {
 
 // Three dots, for the "More" slot on a phone
 function MoreIcon({ size = 20 }) {
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} aria-hidden="true" focusable="false">
-      <circle cx="5" cy="12" r="1.9" fill="currentColor" />
-      <circle cx="12" cy="12" r="1.9" fill="currentColor" />
-      <circle cx="19" cy="12" r="1.9" fill="currentColor" />
-    </svg>
-  );
+  return <Icon name="more" size={size} />;
 }
 
 function NavItem({ item }) {

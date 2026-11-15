@@ -91,7 +91,7 @@ main .page-pad { padding-top: var(--space-7); }
 
 .nav__item {
   position: relative;
-  z-index: 1;
+  z-index: 3; /* above the glass lens, so the icon is never bent by it */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -132,8 +132,10 @@ main .page-pad { padding-top: var(--space-7); }
 /* Where the browser cannot bend the background, keep the glass clear instead of frosting it */
 .nav .nav__glass.lg--css .lg__backdrop { -webkit-backdrop-filter: none; backdrop-filter: none; }
 .nav .nav__glass.lg--css .lg__sheen {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.03) 45%, rgba(255, 255, 255, 0.09));
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 55%);
 }
+/* A clean lens: no white glow on its curved edge, only a hairline. It bends what is behind the bar, never the icons. */
+.nav .nav__glass .lg__sheen { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1); }
 
 /* Live indicator */
 .nav__live {
@@ -251,7 +253,7 @@ main .page-pad { padding-top: var(--space-7); }
   .nav__recess { display: none; }
   .nav__mark { font-size: 1.7rem; }
 
-  /* Five slots: Home, Live TV, Radio, News and More. Every slot shows its label. */
+  /* Five slots: Home, Live TV, Radio, News and More. Icons only: a label under the glass lens came out bent. */
   .nav__track {
     position: fixed;
     left: 0;
@@ -268,7 +270,7 @@ main .page-pad { padding-top: var(--space-7); }
   .nav__cell { height: var(--nav-bottom); }
   .nav__cell--secondary { display: none; }
   .nav__cell--more { display: block; }
-  .nav__item { flex-direction: column; gap: 0.15rem; font-size: 0.7rem; }
+  .nav__item .nav__label { display: none; }
 
   /* The news categories panel belongs to the desktop. On a phone, News goes straight to the News page. */
   .newsmenu__chev,

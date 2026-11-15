@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Icon } from "./Icons";
 import { useOnAir } from "../hooks/useOnAir";
 import { tvPlayer, useTvPlayer } from "../player/tv";
+import { useHandOffWhenOffscreen } from "../hooks/useHandOff";
 import { photoProps } from "../data/images";
 import { preloadProps } from "../routes";
 import "../styles/livestrip.css";
@@ -11,6 +12,7 @@ import "../styles/livestrip.css";
 // when it is closed: the mini-player picks it up.
 function StripPlayer() {
   const slotRef = useRef(null);
+  const wrapRef = useRef(null);
   const player = useTvPlayer();
 
   useLayoutEffect(() => {
@@ -19,11 +21,14 @@ function StripPlayer() {
     return () => tvPlayer.release(el);
   }, []);
 
+  // Scrolling past the open player hands the video to the mini-player
+  useHandOffWhenOffscreen(wrapRef, slotRef);
+
   const playing = player.status === "playing" || player.status === "buffering";
   const silent = player.muted || player.volume === 0;
 
   return (
-    <div className="livestrip__player">
+    <div className="livestrip__player" ref={wrapRef}>
       <div className="livestrip__screen">
         <div className="livestrip__slot" ref={slotRef} />
         {player.status === "offline" && (

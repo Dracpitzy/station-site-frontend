@@ -31,6 +31,7 @@ let video = null; // the one <video> element
 let parking = null; // hidden holder used when no page or mini-player wants the video
 let slot = null; // the page slot currently holding the video
 let miniSlot = null; // the mini-player's slot
+let parkedEl = null; // a page slot that has scrolled out of view, so the video is with the mini-player for now
 let hls = null;
 let retries = 0;
 let mediaRecoveries = 0;
@@ -362,11 +363,28 @@ export const tvPlayer = {
     place();
   },
   release(el) {
+    if (parkedEl === el) parkedEl = null;
     if (slot !== el) return;
     slot = null;
     set({ slotted: false });
     // Leaving the front page while the video was only autoplaying: switch it off.
     if (state.auto) stop();
+    place();
+  },
+  // The visitor is watching, and the page's video has scrolled out of view: the mini-player takes over.
+  hideSlot(el) {
+    if (slot !== el || !state.session || state.auto) return;
+    parkedEl = el;
+    slot = null;
+    set({ slotted: false });
+    place();
+  },
+  // The page's video is back on screen: it goes back into the page.
+  showSlot(el) {
+    if (parkedEl !== el) return;
+    parkedEl = null;
+    slot = el;
+    set({ slotted: true });
     place();
   },
   setMiniSlot(el) {

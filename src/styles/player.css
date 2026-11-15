@@ -329,3 +329,26 @@
   .tv__spinner { animation-duration: 2.4s; }
   .tv__play.lg { animation: none; }
 }
+
+/* ---------- The live controls follow the picture behind them ----------
+   White over a dark scene, dark over a bright one. useVideoTone adds tv__bar--light. */
+.tv__bar.lg {
+  --tv-ink: var(--white);
+  --tv-hover: rgba(255, 255, 255, 0.2);
+  --tv-soft: rgba(255, 255, 255, 0.25);
+  color: var(--tv-ink);
+}
+.tv__bar.lg.tv__bar--light {
+  --tv-ink: #0a1a3a;
+  --tv-hover: rgba(10, 26, 58, 0.12);
+  --tv-soft: rgba(10, 26, 58, 0.22);
+  /* Clear glass over a bright picture has no edge, so give it a thin one */
+  outline: 1px solid rgba(10, 26, 58, 0.16);
+  outline-offset: -1px;
+}
+.tv__bar .tv__btn { color: var(--tv-ink); transition: background var(--dur-fast), transform 0.3s var(--ease), color 0.3s ease; }
+.tv__bar .tv__btn:hover { background: var(--tv-hover); }
+.tv__bar .tv__vol input { accent-color: var(--tv-ink); }
+.tv__bar .tv__now { color: var(--tv-ink); transition: color 0.3s ease; }
+.tv__bar .tv__prog { background: var(--tv-soft); }
+.tv__bar .tv__prog span { background: var(--tv-ink); }

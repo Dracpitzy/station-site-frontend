@@ -2,6 +2,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import { Link } from "react-router-dom";
 import { useOnAir } from "../hooks/useOnAir";
 import { useDarkNavSection } from "../hooks/useNavTheme";
+import { useVideoTone } from "../hooks/useVideoTone";
 import { tvPlayer, useTvPlayer } from "../player/tv";
 import { hostNames } from "../data/schedule";
 import { photoProps } from "../data/images";
@@ -86,6 +87,8 @@ export default function LiveTV() {
   const status = player.status;
   const playing = status === "playing";
   const controlsVisible = awake || !playing || menuOpen;
+  // The controls are white over a dark scene and dark over a bright one
+  const tone = useVideoTone(frameRef, ".tv__bar", controlsVisible);
   const showBigPlay = status === "idle" || status === "paused";
   const message = STATE_MESSAGES[status];
   const poster = photoProps("studio", [800, 1280, 1920]);
@@ -157,7 +160,7 @@ export default function LiveTV() {
           <LiquidGlass
             preset="player"
             radius="pill"
-            className={`tv__bar${controlsVisible ? "" : " is-hidden"}`}
+            className={`tv__bar${controlsVisible ? "" : " is-hidden"}${tone === "light" ? " tv__bar--light" : ""}`}
             aria-hidden={!controlsVisible}
           >
             <div className="tv__controls">

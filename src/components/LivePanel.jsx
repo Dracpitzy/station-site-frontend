@@ -4,6 +4,7 @@ import { Icon } from "./Icons";
 import { timeLeft } from "../lib/timeLeft";
 import { useOnAir } from "../hooks/useOnAir";
 import { tvPlayer, useTvPlayer } from "../player/tv";
+import { useHandOffWhenOffscreen } from "../hooks/useHandOff";
 import { hostNames } from "../data/schedule";
 import { photoProps } from "../data/images";
 import { preloadProps } from "../routes";
@@ -25,6 +26,9 @@ export default function LivePanel() {
     tvPlayer.attach(el, { passive: true });
     return () => tvPlayer.release(el);
   }, []);
+
+  // If the visitor is watching and scrolls past, the mini-player takes the video over.
+  useHandOffWhenOffscreen(panelRef, slotRef);
 
   // Autoplay only while the panel is on screen and the tab is visible, and never for people who asked for less motion.
   useEffect(() => {

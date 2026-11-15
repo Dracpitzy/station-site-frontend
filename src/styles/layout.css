@@ -33,7 +33,7 @@ main { min-height: 70vh; }
   margin-top: var(--space-8);
   padding-top: var(--space-8);
   color: var(--white);
-  background: linear-gradient(160deg, var(--blue-700), var(--blue-900));
+  background: linear-gradient(160deg, #07112f, #030814); /* darker than the navigation navy */
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 .footer__grid {
