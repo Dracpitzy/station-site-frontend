@@ -9,7 +9,7 @@ import { LiquidGlass } from "./liquid-glass/LiquidGlass";
 import "../styles/phonenav.css";
 
 // The navigation on a phone: three separate pieces of glass floating at the bottom of the screen.
-//   Home (a circle) | News, Live TV and Radio (a capsule) | More (a circle)
+//   Home (a circle) | News, Live TV, Radio and Schedule (a capsule) | More (a circle)
 // It slides down out of sight when scrolling stops, and comes straight back when scrolling or touching starts.
 
 const IDLE_MS = 1200; // this long after the last scroll, it slides away (the slide takes about half a second)
@@ -20,7 +20,7 @@ const PIECE = {
   thickness: 30,
   bezel: 18,
   ior: 2.2,
-  blur: 0.3,
+  blur: 8, // frosted: what is behind the glass is softened before it is bent
   specular: 0.3,
   tint: 0.02,
   shadow: 0.4,
@@ -30,9 +30,9 @@ const PIECE = {
 
 const byTo = (to) => ITEMS.find((i) => i.to === to);
 const HOME = byTo("/");
-const MAIN = ["/news", "/live", "/radio"].map(byTo);
-const MORE = ["/schedule", "/about", "/contact"].map(byTo);
-const FILLED = { home: "homeFill", news: "newsFill", tv: "tvFill", radio: "radioFill" };
+const MAIN = ["/news", "/live", "/radio", "/schedule"].map(byTo);
+const MORE = ["/about", "/contact"].map(byTo);
+const FILLED = { home: "homeFill", news: "newsFill", tv: "tvFill", radio: "radioFill", calendar: "calendarFill" };
 
 export default function PhoneNav() {
   return useCompact() ? <PhoneNavBar /> : null;
