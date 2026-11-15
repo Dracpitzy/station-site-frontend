@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#1559e6" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" as="image" href="/logo.png" />
     <title>ITV | Independent Television and Radio</title>
 
     <style>
@@ -60,23 +63,14 @@
       }
 
       /* Wordmark */
-      .sp-word {
-        display: flex;
-        font: 800 38px/1 -apple-system, BlinkMacSystemFont, "SF Pro Display",
-              "Segoe UI", Roboto, Arial, sans-serif;
-        letter-spacing: -.02em;
-        color: #1559e6;
-      }
-      .sp-word i {
-        font-style: normal;
-        display: inline-block;
+      .sp-logo {
+        display: block;
+        width: 104px;
+        height: auto;
         opacity: 0;
         transform: translateY(14px);
-        animation: sp-rise .55s cubic-bezier(.22,1,.36,1) forwards;
+        animation: sp-rise .55s cubic-bezier(.22,1,.36,1) .25s forwards;
       }
-      .sp-word i:nth-child(1) { animation-delay: .25s; }
-      .sp-word i:nth-child(2) { animation-delay: .33s; }
-      .sp-word i:nth-child(3) { animation-delay: .41s; }
 
       /* Broadcast rings */
       .sp-ring {
@@ -142,7 +136,7 @@
         <div class="sp-ring"></div>
         <div class="sp-ring r2"></div>
         <div class="sp-orb">
-          <span class="sp-word"><i>I</i><i>T</i><i>V</i></span>
+          <img class="sp-logo" src="/logo.png" alt="" width="104" height="55" fetchpriority="high" decoding="async" />
         </div>
         <p class="sp-tag">Independent Television &amp; Radio</p>
         <div class="sp-bar"><span></span></div>

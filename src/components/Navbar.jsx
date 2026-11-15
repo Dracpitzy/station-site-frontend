@@ -525,7 +525,7 @@ export default function Navbar() {
 
         <div className="nav__row">
           <Link to="/" className="nav__logo" ref={logoRef} aria-label={`${station.name} home`} {...preloadProps("Home")}>
-            <span className="nav__mark">{station.name}</span>
+            <img className="nav__mark" src="/logo-light.png" alt="" width="83" height="44" decoding="async" />
             <span className="nav__sub">Television &amp; Radio</span>
           </Link>
 
