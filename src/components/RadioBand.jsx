@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { Icon } from "./Icons";
-import { timeLeft } from "./OnAirCard";
+import { timeLeft } from "../lib/timeLeft";
 import { useOnAir } from "../hooks/useOnAir";
 import { radioPlayer, useRadioPlayer } from "../player/radio";
 import { hostNames } from "../data/schedule";

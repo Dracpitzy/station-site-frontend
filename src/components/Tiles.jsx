@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Cover from "./Cover";
-import { articleLink } from "./StoryCards";
+import { articleLink } from "../lib/articleLink";
 import { categoryName, timeAgo } from "../data/news";
 import "../styles/tiles.css";
 

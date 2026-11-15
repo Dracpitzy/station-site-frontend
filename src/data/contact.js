@@ -13,13 +13,7 @@ export const contactInfo = {
   ],
 };
 
-export const topics = [
-  "General enquiry",
-  "News tip",
-  "Programme feedback",
-  "Advertising and partnerships",
-  "Technical problem",
-];
+export const topics = ["General enquiries", "Newsroom", "Advertising", "Technical support", "Partnerships"];
 
 export const MESSAGE_MAX = 1000;
 const MESSAGE_MIN = 10;
@@ -43,19 +37,25 @@ export function validateContact(values) {
   return errors;
 }
 
-// Sends the message. For now it only waits a moment and says yes, so the form can be built and tested.
-// When the Django API exists, replace the body with a request, for example:
-//
-//   const res = await fetch(`${API_URL}/contact/`, {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(message),
-//   });
-//   if (!res.ok) throw new Error("The message could not be sent");
-//
-// The form already handles a thrown error by showing a "try again" notice.
+// Where messages go. Set VITE_API_URL (for example in a .env file) to the address of the station's API,
+// and the form posts each message as JSON to <that address>/contact/. Without it the form runs in demo mode:
+// it checks the message and says plainly that nothing was sent.
+const API_URL = import.meta.env.VITE_API_URL;
+export const DEMO_MODE = !API_URL;
+
+// Sends the message. Resolves with { demo } on success and throws if the message could not be sent.
 export async function submitContact(message) {
-  if (import.meta.env.DEV) console.info("[contact] demo only, this message was not sent:", message);
-  await new Promise((resolve) => setTimeout(resolve, 900));
-  return { ok: true };
+  if (DEMO_MODE) {
+    if (import.meta.env.DEV) console.info("[contact] demo mode, this message was not sent:", message);
+    await new Promise((resolve) => setTimeout(resolve, 900));
+    return { demo: true };
+  }
+
+  const response = await fetch(`${API_URL.replace(/\/$/, "")}/contact/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(message),
+  });
+  if (!response.ok) throw new Error("The message could not be sent");
+  return { demo: false };
 }

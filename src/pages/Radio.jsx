@@ -7,7 +7,7 @@ import { getDaySchedule, hostNames } from "../data/schedule";
 import { station } from "../data/config";
 import { photoProps } from "../data/images";
 import { Icon } from "../components/Icons";
-import { timeLeft } from "../components/OnAirCard";
+import { timeLeft } from "../lib/timeLeft";
 import "../styles/player.css";
 import "../styles/radio.css";
 

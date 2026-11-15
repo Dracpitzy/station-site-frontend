@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import EmptyState from "../components/EmptyState";
 import { GridTile, LeadTile, RowTile, SideTile } from "../components/Tiles";
-import { BlockHead, articleLink } from "../components/StoryCards";
+import { BlockHead } from "../components/StoryCards";
+import { articleLink } from "../lib/articleLink";
 import { useIsPhone } from "../hooks/useIsPhone";
 import { articles, categories, categoryName, inCategory, popular, timeAgo } from "../data/news";
 import "../styles/home.css"; // the section layouts shared with the front page

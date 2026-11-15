@@ -4,7 +4,8 @@ import LiveStrip from "../components/LiveStrip";
 import RadioBand from "../components/RadioBand";
 import VideoSection from "../components/VideoSection";
 import { GridTile, LeadTile, RowTile, SideTile } from "../components/Tiles";
-import { BlockHead, articleLink } from "../components/StoryCards";
+import { BlockHead } from "../components/StoryCards";
+import { articleLink } from "../lib/articleLink";
 import { useIsPhone } from "../hooks/useIsPhone";
 import {
   breakingStory,

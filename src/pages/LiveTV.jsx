@@ -7,7 +7,7 @@ import { hostNames } from "../data/schedule";
 import { photoProps } from "../data/images";
 import { LiquidGlass } from "../components/liquid-glass/LiquidGlass";
 import { Icon } from "../components/Icons";
-import { timeLeft } from "../components/OnAirCard";
+import { timeLeft } from "../lib/timeLeft";
 import "../styles/player.css";
 
 const STATE_MESSAGES = {

@@ -1,8 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import PageBand from "../components/PageBand";
 import { Icon } from "../components/Icons";
-import { timeLeft } from "../components/OnAirCard";
+import { timeLeft } from "../lib/timeLeft";
 import { useOnAir } from "../hooks/useOnAir";
 import { getDaySchedule, hostNames } from "../data/schedule";
 import { station } from "../data/config";
@@ -75,104 +74,103 @@ export default function Schedule() {
   const jump = () => nowRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
 
   return (
-    <>
-      <PageBand eyebrow="Programmes" title="Schedule">
-        What is on TV and radio, today and all week.
-      </PageBand>
+    <div className="container sched">
+      <header className="shead">
+        <h1>Schedule</h1>
+        <p>What is on TV and radio, today and all week.</p>
+      </header>
 
-      <div className="container sched">
-        <div className="sched__bar">
-          <div className="sched__switch" role="group" aria-label="Channel" data-channel={channel}>
-            <button type="button" aria-pressed={channel === "tv"} onClick={() => choose({ channel: null })}>
-              <Icon name="tv" size={18} />
-              TV
-            </button>
-            <button type="button" aria-pressed={channel === "radio"} onClick={() => choose({ channel: "radio" })}>
-              <Icon name="radio" size={18} />
-              Radio
-            </button>
-          </div>
-
-          <div className="sched__days" role="group" aria-label="Day">
-            {week.map((d) => (
-              <button
-                key={d.key}
-                type="button"
-                className="sched__day"
-                aria-pressed={d.key === selected.key}
-                onClick={() => choose({ day: d.offset === 0 ? null : d.key })}
-              >
-                <span>{d.label}</span>
-                <strong>{d.date}</strong>
-              </button>
-            ))}
-          </div>
+      <div className="sched__bar">
+        <div className="sched__switch" role="group" aria-label="Channel" data-channel={channel}>
+          <button type="button" aria-pressed={channel === "tv"} onClick={() => choose({ channel: null })}>
+            <Icon name="tv" size={18} />
+            TV
+          </button>
+          <button type="button" aria-pressed={channel === "radio"} onClick={() => choose({ channel: "radio" })}>
+            <Icon name="radio" size={18} />
+            Radio
+          </button>
         </div>
 
-        <div className="sched__head">
-          <h2>{selected.full}</h2>
-          <p>
-            Times are in {city} time{isToday ? `. It is ${onAir.time} there now.` : "."}
-          </p>
-          {isToday && (
-            <button type="button" className="sched__jump" onClick={jump}>
-              Jump to on air
+        <div className="sched__days" role="group" aria-label="Day">
+          {week.map((d) => (
+            <button
+              key={d.key}
+              type="button"
+              className="sched__day"
+              aria-pressed={d.key === selected.key}
+              onClick={() => choose({ day: d.offset === 0 ? null : d.key })}
+            >
+              <span>{d.label}</span>
+              <strong>{d.date}</strong>
             </button>
-          )}
+          ))}
         </div>
+      </div>
 
-        <ol className="sched__list">
-          {slots.map((s) => {
-            const now = isToday && s.id === air.current.id;
-            const past = isToday && s.endMin <= onAir.minutes;
-            const hosts = hostNames(s);
-            return (
-              <li
-                key={s.id}
-                ref={now ? nowRef : undefined}
-                className={`sched__item${now ? " is-now" : past ? " is-past" : ""}`}
-                aria-current={now ? "true" : undefined}
-              >
-                <div className="sched__time">
-                  <strong>{s.startLabel}</strong>
-                  <small>{duration(s.endMin - s.startMin)}</small>
-                </div>
-                <span className="sched__dot" aria-hidden="true" />
-                <div className="sched__card">
-                  <div className="sched__meta">
-                    <span className={`sched__tag sched__tag--${s.category}`}>{capitalise(s.category)}</span>
-                    {now && (
-                      <span className="sched__badge">
-                        <span className="live-dot" />
-                        On air
-                      </span>
-                    )}
-                  </div>
-                  <h3>{s.title}</h3>
-                  {hosts && <p className="sched__hosts">with {hosts}</p>}
-                  <p className="sched__desc">{s.desc}</p>
+      <div className="sched__head">
+        <h2>{selected.full}</h2>
+        <p>
+          Times are in {city} time{isToday ? `. It is ${onAir.time} there now.` : "."}
+        </p>
+        {isToday && (
+          <button type="button" className="sched__jump" onClick={jump}>
+            Jump to on air
+          </button>
+        )}
+      </div>
 
+      <ol className="sched__list">
+        {slots.map((s) => {
+          const now = isToday && s.id === air.current.id;
+          const past = isToday && s.endMin <= onAir.minutes;
+          const hosts = hostNames(s);
+          return (
+            <li
+              key={s.id}
+              ref={now ? nowRef : undefined}
+              className={`sched__item${now ? " is-now" : past ? " is-past" : ""}`}
+              aria-current={now ? "true" : undefined}
+            >
+              <div className="sched__time">
+                <strong>{s.startLabel}</strong>
+                <small>{duration(s.endMin - s.startMin)}</small>
+              </div>
+              <span className="sched__dot" aria-hidden="true" />
+              <div className="sched__card">
+                <div className="sched__meta">
+                  <span className="sched__tag">{capitalise(s.category)}</span>
                   {now && (
-                    <div className="sched__live">
-                      <span className="sched__prog" aria-hidden="true">
-                        <span style={{ transform: `scaleX(${air.progress})` }} />
-                      </span>
-                      <span className="sched__left">{timeLeft(air.minutesLeft)}</span>
-                      <Link
-                        to={channel === "tv" ? "/live" : "/radio"}
-                        className="sched__watch"
-                        {...preloadProps(channel === "tv" ? "LiveTV" : "Radio")}
-                      >
-                        {channel === "tv" ? "Watch live" : "Listen live"}
-                      </Link>
-                    </div>
+                    <span className="sched__badge">
+                      <span className="live-dot" />
+                      On air
+                    </span>
                   )}
                 </div>
-              </li>
-            );
-          })}
-        </ol>
-      </div>
-    </>
+                <h3>{s.title}</h3>
+                {hosts && <p className="sched__hosts">with {hosts}</p>}
+                <p className="sched__desc">{s.desc}</p>
+
+                {now && (
+                  <div className="sched__live">
+                    <span className="sched__prog" aria-hidden="true">
+                      <span style={{ transform: `scaleX(${air.progress})` }} />
+                    </span>
+                    <span className="sched__left">{timeLeft(air.minutesLeft)}</span>
+                    <Link
+                      to={channel === "tv" ? "/live" : "/radio"}
+                      className="sched__watch"
+                      {...preloadProps(channel === "tv" ? "LiveTV" : "Radio")}
+                    >
+                      {channel === "tv" ? "Watch live" : "Listen live"}
+                    </Link>
+                  </div>
+                )}
+              </div>
+            </li>
+          );
+        })}
+      </ol>
+    </div>
   );
 }

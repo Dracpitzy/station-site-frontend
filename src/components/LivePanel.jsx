@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Icon } from "./Icons";
-import { timeLeft } from "./OnAirCard";
+import { timeLeft } from "../lib/timeLeft";
 import { useOnAir } from "../hooks/useOnAir";
 import { tvPlayer, useTvPlayer } from "../player/tv";
 import { hostNames } from "../data/schedule";

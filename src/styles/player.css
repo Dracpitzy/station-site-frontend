@@ -29,10 +29,7 @@
   isolation: isolate;
   padding: calc(var(--nav-h) + 2.5rem) 0 4rem;
   color: var(--white);
-  background:
-    radial-gradient(60% 40% at 15% 0%, rgba(47, 120, 255, 0.35), transparent 70%),
-    radial-gradient(50% 40% at 90% 10%, rgba(90, 151, 255, 0.22), transparent 70%),
-    linear-gradient(180deg, var(--blue-900), #061a47);
+  background: var(--navy);
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 
@@ -207,7 +204,7 @@
   bottom: calc(100% + 0.9rem);
   min-width: 130px;
   padding: 0.4rem;
-  border-radius: 18px;
+  border-radius: var(--radius-md);
   background: rgba(6, 26, 71, 0.85);
   -webkit-backdrop-filter: blur(14px);
   backdrop-filter: blur(14px);
@@ -217,7 +214,7 @@
   display: block;
   width: 100%;
   padding: 0.6rem 0.9rem;
-  border-radius: 12px;
+  border-radius: var(--radius-sm);
   color: var(--white);
   font-size: var(--text-sm);
   font-weight: 600;
@@ -248,7 +245,7 @@
   display: flex;
   gap: 1rem;
   padding: 0.8rem 1rem;
-  border-radius: 16px;
+  border-radius: var(--radius-sm);
   background: rgba(255, 255, 255, 0.08);
   font-weight: 600;
 }
@@ -319,7 +316,7 @@
 
 /* ---------- Phones ---------- */
 @media (max-width: 760px) {
-  .tv__frame { border-radius: 20px; }
+  .tv__frame { border-radius: var(--radius-lg); }
   .tv__bar.lg { left: 0.6rem; right: 0.6rem; bottom: 0.6rem; }
   .tv__vol input,
   .tv__now small { display: none; }

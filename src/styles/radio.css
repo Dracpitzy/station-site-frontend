@@ -30,7 +30,7 @@
   position: relative;
   margin-top: 1.6rem;
   color: var(--white);
-  border-radius: 36px;
+  border-radius: calc(var(--radius-lg) + 4px);
   border: 1px solid rgba(255, 255, 255, 0.26);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4), 0 24px 60px rgba(4, 10, 36, 0.35);
@@ -49,7 +49,7 @@
   position: relative;
   aspect-ratio: 1;
   overflow: hidden;
-  border-radius: 26px;
+  border-radius: var(--radius-md);
   background: #06122f;
   box-shadow: var(--shadow-md);
 }

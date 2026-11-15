@@ -34,7 +34,7 @@ export default function Footer() {
     <footer className="footer" data-tone="dark">
       <div className="container footer__grid">
         <div className="footer__brand">
-          <h3>{station.name}</h3>
+          <p className="footer__name">{station.name}</p>
           <p>{station.fullName}</p>
           <p>{station.tagline}</p>
           <p className="footer__freq">
@@ -45,7 +45,7 @@ export default function Footer() {
 
         {columns.map((col) => (
           <div key={col.title}>
-            <h4>{col.title}</h4>
+            <h2 className="footer__title">{col.title}</h2>
             <ul>
               {col.items.map(([label, to]) => (
                 <li key={label}>
@@ -57,7 +57,7 @@ export default function Footer() {
         ))}
 
         <div>
-          <h4>Follow Us</h4>
+          <h2 className="footer__title">Follow Us</h2>
           <div className="footer__socials">
             {contactInfo.socials.map((s) => (
               <a

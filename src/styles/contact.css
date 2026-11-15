@@ -1,121 +1,202 @@
-/* ---------- Contact page ---------- */
+/* ---------- Contact page ----------
+   A dark page with the studio photo faint behind it. The form sits on a single panel of frosted glass:
+   blurred, softly translucent, with a fine light edge. Nothing else on the page is glass. */
 
-.contact {
+.contactpage {
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  margin-top: calc(-1 * var(--nav-h));
+  padding: calc(var(--nav-h) + 1rem) 0 var(--space-8);
+  margin-bottom: calc(-1 * var(--space-8));
+  color: var(--white);
+  background: var(--midnight);
+  overflow-x: clip;
+}
+.contactpage__bg { position: absolute; inset: 0; z-index: -2; width: 100%; height: 100%; object-fit: cover; object-position: 60% 20%; }
+.contactpage__shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(45% 35% at 80% 62%, rgba(47, 120, 255, 0.45), transparent 70%),
+    radial-gradient(40% 30% at 10% 15%, rgba(90, 151, 255, 0.25), transparent 70%),
+    linear-gradient(180deg, rgba(7, 20, 38, 0.82), rgba(7, 20, 38, 0.93));
+}
+
+/* ---------- Opening ---------- */
+.chero { padding: 2.6rem 0 2.4rem; }
+.chero__label { color: var(--champagne); font-size: 0.8rem; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; }
+.chero h1 {
+  margin-top: 0.8rem;
+  font-size: clamp(3.2rem, 1.8rem + 6vw, 6.4rem);
+  font-weight: 800;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+.chero__intro { max-width: 46ch; margin-top: 1.1rem; color: rgba(255, 255, 255, 0.82); font-size: 1.15rem; }
+
+/* ---------- Details on the left, the form on the right ---------- */
+.cmain { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 4rem; align-items: start; }
+
+.cdetails { display: grid; gap: 1.6rem; }
+.cdetails li { display: flex; gap: 1rem; align-items: flex-start; }
+.cdetails svg { flex: none; margin-top: 0.15rem; color: var(--blue-300); }
+.cdetails__label {
+  display: block;
+  margin-bottom: 0.15rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.cdetails a,
+.cdetails__value { font-size: 1.15rem; font-weight: 600; overflow-wrap: anywhere; }
+.cdetails a:hover { color: var(--blue-300); text-decoration: underline; }
+
+.csocial { margin-top: 2.2rem; padding-top: 1.6rem; border-top: 1px solid rgba(255, 255, 255, 0.16); }
+.csocial ul { display: flex; gap: 0.6rem; margin-top: 0.6rem; }
+.csocial a {
   display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
-  gap: var(--space-6);
-  align-items: start;
-  margin-top: 1.4rem;
-  padding-bottom: var(--space-7);
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--white);
+  transition: background var(--dur-fast), transform 0.3s var(--ease);
 }
+.csocial a:hover { background: rgba(255, 255, 255, 0.22); transform: translateY(-2px); }
 
-/* ---------- The form ---------- */
-.contact__form {
-  padding: var(--space-5);
-  border-radius: var(--radius-lg);
-  background: var(--white);
-  box-shadow: var(--shadow-md);
+/* ---------- The frosted glass form ---------- */
+.cform {
+  padding: 2.2rem;
+  border-radius: calc(var(--radius-lg) + 4px);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.06));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35), 0 24px 60px rgba(2, 8, 28, 0.45);
+  -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  backdrop-filter: blur(16px) saturate(1.3);
 }
-.contact__title { margin-bottom: 1.2rem; font-size: var(--text-xl); }
+.cform__title { font-size: var(--text-xl); font-weight: 800; text-transform: uppercase; line-height: 1; }
+.cform__lede { margin: 0.5rem 0 1.4rem; color: rgba(255, 255, 255, 0.78); }
+.cform__demo {
+  margin-bottom: 1.1rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: var(--radius-sm);
+  background: rgba(200, 185, 145, 0.18);
+  color: var(--champagne);
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.cform__alert {
+  margin-bottom: 1.1rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 90, 80, 0.16);
+  color: #ffc2bd;
+  font-weight: 600;
+}
 
 .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1rem; }
 .field { display: grid; gap: 0.4rem; margin-bottom: 1.1rem; }
-.field label { font-size: var(--text-sm); font-weight: 600; }
+.field label { font-size: var(--text-sm); font-weight: 600; color: rgba(255, 255, 255, 0.92); }
 .field input,
 .field select,
 .field textarea {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: var(--radius-sm);
-  background: var(--blue-50);
-  color: var(--ink);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--white);
   font: inherit;
-  transition: background var(--dur-fast), box-shadow var(--dur-fast);
+  transition: background var(--dur-fast), border-color var(--dur-fast), box-shadow var(--dur-fast);
 }
 .field textarea { min-height: 9rem; resize: vertical; }
+.field input::placeholder,
+.field textarea::placeholder { color: rgba(255, 255, 255, 0.45); }
 .field select {
   appearance: none;
   padding-right: 2.6rem;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231559e6' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 0.9rem center;
   background-size: 18px;
 }
+.field select option { background: #0f1f4d; color: var(--white); }
 .field input:focus,
 .field select:focus,
 .field textarea:focus {
   outline: none;
-  background-color: var(--white);
-  box-shadow: 0 0 0 2px var(--blue-500);
+  border-color: var(--blue-300);
+  background-color: rgba(255, 255, 255, 0.13);
+  box-shadow: 0 0 0 3px rgba(90, 151, 255, 0.35);
 }
-.field [aria-invalid="true"] { background-color: #fff3f2; box-shadow: 0 0 0 2px #d93025; }
-.field__error { color: #b3261e; font-size: var(--text-xs); font-weight: 600; }
+.field [aria-invalid="true"] { border-color: #ff9a92; background-color: rgba(255, 90, 80, 0.1); }
+.field__error { color: #ffb3ac; font-size: var(--text-xs); font-weight: 700; }
 .field__error[hidden] { display: none; }
 .field__foot { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; }
-.field__count { margin-left: auto; color: var(--ink-soft); font-size: 0.75rem; font-variant-numeric: tabular-nums; }
+.field__count { margin-left: auto; color: rgba(255, 255, 255, 0.6); font-size: 0.75rem; font-variant-numeric: tabular-nums; }
 
-/* Off screen, so only programs find it */
-.contact__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-
-.contact__send { width: 100%; justify-content: center; }
-.contact__send[disabled] { opacity: 0.7; cursor: progress; }
-.contact__alert {
-  margin-bottom: 1.1rem;
-  padding: 0.8rem 1rem;
-  border-radius: var(--radius-sm);
-  background: #fff3f2;
-  color: #b3261e;
-  font-weight: 600;
+/* Browsers paint a pale box over a filled-in field. Keep it dark and the writing white. */
+.field input:-webkit-autofill {
+  -webkit-text-fill-color: var(--white);
+  caret-color: var(--white);
+  box-shadow: 0 0 0 1000px #16295f inset;
 }
 
-/* ---------- After sending ---------- */
-.contact__thanks { display: grid; justify-items: center; gap: 0.8rem; padding: var(--space-5) 0; text-align: center; }
-.contact__thanks h2 { font-size: var(--text-xl); outline: none; }
-.contact__thanks p { max-width: 42ch; color: var(--ink-soft); }
-.contact__thanks-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.7rem; margin-top: 0.6rem; }
-.contact__check {
+/* Off screen, so only programs find it */
+.cform__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+.cform__send { width: 100%; justify-content: center; min-height: 52px; }
+.cform__send[disabled] { opacity: 0.7; cursor: progress; }
+
+/* After sending */
+.cthanks { display: grid; justify-items: center; gap: 0.8rem; padding: 2rem 0; text-align: center; }
+.cthanks h2 { font-size: var(--text-xl); font-weight: 800; text-transform: uppercase; outline: none; }
+.cthanks p { max-width: 40ch; color: rgba(255, 255, 255, 0.82); }
+.cthanks .btn { margin-top: 0.6rem; }
+.cthanks__check {
   display: grid;
   place-items: center;
   width: 64px;
   height: 64px;
   border-radius: 50%;
-  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+  background: var(--blue-600);
   color: var(--white);
-  box-shadow: 0 10px 28px rgba(21, 89, 230, 0.35);
 }
 
-/* ---------- Details ---------- */
-.contact__info { display: grid; gap: 1rem; }
-.info-card { padding: 1.1rem 1.3rem; border-radius: var(--radius-md); background: var(--blue-50); }
-.info-card dt,
-.info-card__label {
-  color: var(--blue-600);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+/* ---------- Closing line ---------- */
+.cclose {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  margin-top: 4rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
 }
-.info-card dd { margin: 0.2rem 0 0.9rem; font-weight: 600; overflow-wrap: anywhere; }
-.info-card dd:last-child { margin-bottom: 0; }
-.info-card a:hover { color: var(--blue-600); text-decoration: underline; }
-.socials { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.6rem; }
-.socials a {
-  display: inline-block;
-  padding: 0.4rem 0.95rem;
-  border-radius: var(--radius-pill);
-  background: var(--white);
-  color: var(--blue-700);
-  font-size: var(--text-sm);
-  font-weight: 700;
-  box-shadow: var(--shadow-sm);
-  transition: background var(--dur-fast);
-}
-.socials a:hover { background: var(--blue-100); text-decoration: none; }
+.cclose p { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; }
+.cclose__links { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+.cclose__ghost { background: rgba(255, 255, 255, 0.14); color: var(--white); }
+.cclose__ghost:hover { background: rgba(255, 255, 255, 0.26); }
 
-@media (max-width: 860px) {
-  .contact { grid-template-columns: 1fr; }
+/* ---------- Tablet and phone ---------- */
+@media (max-width: 1000px) {
+  .cmain { grid-template-columns: 1fr; gap: 2.4rem; }
 }
-@media (max-width: 560px) {
+@media (max-width: 700px) {
+  .chero { padding: 1.4rem 0 1.6rem; }
+  .chero__intro { font-size: 1.02rem; }
+  .cdetails { gap: 1.1rem; }
+  .cdetails a,
+  .cdetails__value { font-size: 1.05rem; }
+  .csocial { margin-top: 1.6rem; padding-top: 1.2rem; }
+  .cform { padding: 1.3rem; }
   .field-row { grid-template-columns: 1fr; }
-  .contact__form { padding: 1.2rem; }
+  .cclose { margin-top: 2.6rem; }
+  .cclose__links .btn { flex: 1 1 8rem; justify-content: center; }
 }
