@@ -1,28 +1,15 @@
-import { useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { station } from "../data/config";
 import { articles, categories } from "../data/news";
 import { useOnAir } from "../hooks/useOnAir";
 import { preloadProps } from "../routes";
 import { Icon } from "./Icons";
+import { ITEMS, isActivePath } from "../data/navItems";
+import { useCompact } from "../hooks/useCompact";
 import { LiquidGlass } from "./liquid-glass/LiquidGlass";
 import "../styles/nav.css";
 import "../styles/newsmenu.css";
-
-const ITEMS = [
-  { to: "/", label: "Home", icon: "home", page: "Home", end: true },
-  { to: "/live", label: "Live TV", icon: "tv", page: "LiveTV" },
-  { to: "/radio", label: "Radio", icon: "radio", page: "Radio" },
-  { to: "/news", label: "News", icon: "news", page: "News" },
-  { to: "/schedule", label: "Schedule", icon: "calendar", page: "Schedule" },
-  { to: "/about", label: "About", icon: "info", page: "About" },
-  { to: "/contact", label: "Contact", icon: "mail", page: "Contact" },
-];
-
-// On a phone the bottom bar has room for five slots. Home, Live TV, Radio and News get one each,
-// and the pages from SECONDARY_FROM on share the fifth slot, "More".
-const SECONDARY_FROM = 4;
-const MORE_INDEX = ITEMS.length;
 
 // ---------- settings you can change ----------
 const RAIL_AT = 80; // the rail can only appear once you are this far down the page
@@ -50,20 +37,7 @@ const INDICATOR = {
 
 // Which item the current address belongs to. Story pages belong to News. -1 = none of them.
 function activeIndexFor(pathname) {
-  return ITEMS.findIndex((i) => (i.end ? pathname === i.to : pathname === i.to || pathname.startsWith(i.to + "/")));
-}
-
-// On a phone the same navigation sits at the bottom of the screen.
-function useCompact() {
-  return useSyncExternalStore(
-    (notify) => {
-      const query = window.matchMedia("(max-width: 860px)");
-      query.addEventListener("change", notify);
-      return () => query.removeEventListener("change", notify);
-    },
-    () => window.matchMedia("(max-width: 860px)").matches,
-    () => false
-  );
+  return ITEMS.findIndex((i) => isActivePath(i, pathname));
 }
 
 // Bar at the top, or rail down the side. The direction of the scroll decides:
@@ -361,10 +335,6 @@ function playMorph(first, parts, index, mode) {
 // ---------- pieces ----------
 
 // Three dots, for the "More" slot on a phone
-function MoreIcon({ size = 20 }) {
-  return <Icon name="more" size={size} />;
-}
-
 function NavItem({ item }) {
   return (
     <NavLink
@@ -509,28 +479,8 @@ export default function Navbar() {
 
   const mode = compact ? "compact" : rail ? "rail" : "bar";
   const activeIndex = activeIndexFor(pathname);
-  // On a phone the pages that live under "More" light up the More slot
-  const index = compact && activeIndex >= SECONDARY_FROM ? MORE_INDEX : activeIndex;
+  const index = activeIndex;
   const box = useActiveBox(trackRef, index, mode);
-
-  // The "More" sheet. It remembers which page it was opened on, so going to another page closes it.
-  const [moreAt, setMoreAt] = useState(null);
-  const moreRef = useRef(null);
-  const moreOpen = compact && moreAt === pathname;
-
-  useEffect(() => {
-    if (!moreOpen) return;
-    const onKey = (e) => e.key === "Escape" && setMoreAt(null);
-    const onDown = (e) => {
-      if (moreRef.current && !moreRef.current.contains(e.target)) setMoreAt(null);
-    };
-    document.addEventListener("keydown", onKey);
-    document.addEventListener("pointerdown", onDown);
-    return () => {
-      document.removeEventListener("keydown", onKey);
-      document.removeEventListener("pointerdown", onDown);
-    };
-  }, [moreOpen]);
 
   // After the swap, animate from the old positions to the new ones.
   useLayoutEffect(() => {
@@ -587,7 +537,7 @@ export default function Navbar() {
                 <NewsCell key={item.to} item={item} index={i} />
               ) : (
                 <div
-                  className={`nav__cell${i >= SECONDARY_FROM ? " nav__cell--secondary" : ""}`}
+                  className="nav__cell"
                   key={item.to}
                   data-nav-index={i}
                 >
@@ -595,35 +545,6 @@ export default function Navbar() {
                 </div>
               )
             )}
-
-            {/* Phone only: the pages that do not have a slot of their own */}
-            <div className="nav__cell nav__cell--more" data-nav-index={MORE_INDEX} ref={moreRef}>
-              <button
-                type="button"
-                className={`nav__item nav__more${activeIndex >= SECONDARY_FROM ? " active" : ""}`}
-                aria-haspopup="dialog"
-                aria-expanded={moreOpen}
-                aria-controls="nav-more-sheet"
-                onClick={() => setMoreAt(moreOpen ? null : pathname)}
-              >
-                <MoreIcon size={20} />
-                <span className="nav__label">More</span>
-              </button>
-              <div id="nav-more-sheet" className={`nav__sheet${moreOpen ? " is-open" : ""}`} role="dialog" aria-label="More pages">
-                {ITEMS.slice(SECONDARY_FROM).map((item) => (
-                  <NavLink
-                    key={item.to}
-                    to={item.to}
-                    className="nav__sheetlink"
-                    onClick={() => setMoreAt(null)}
-                    {...preloadProps(item.page)}
-                  >
-                    <Icon name={item.icon} size={20} />
-                    <span>{item.label}</span>
-                  </NavLink>
-                ))}
-              </div>
-            </div>
 
             <LiquidGlass
               preset={INDICATOR}

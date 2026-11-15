@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import MiniPlayer from "./MiniPlayer";
+import PhoneNav from "./PhoneNav";
 import ScrollToTop from "./ScrollToTop";
 
 export default function Layout() {
@@ -16,6 +17,7 @@ export default function Layout() {
         </Suspense>
       </main>
       <Footer />
+      <PhoneNav />
       <MiniPlayer />
     </>
   );

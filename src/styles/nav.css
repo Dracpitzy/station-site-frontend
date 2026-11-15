@@ -86,8 +86,6 @@ main .page-pad { padding-top: var(--space-7); }
 }
 .nav__cell { position: relative; flex: 1 1 0; min-width: 0; height: 100%; }
 /* The "More" slot and its sheet are only for phones */
-.nav__cell--more,
-.nav__sheet { display: none; }
 
 .nav__item {
   position: relative;
@@ -240,89 +238,16 @@ main .page-pad { padding-top: var(--space-7); }
 
 /* ---------- Phone: a slim header that scrolls away, and the navigation along the bottom ---------- */
 @media (max-width: 860px) {
-  :root { --nav-h: 54px; --nav-bottom: 56px; --mini-h: 52px; }
+  :root { --nav-h: 54px; }
 
-  /* Room under the page for the bottom bar, and for the mini-player docked above it while it is showing */
-  body { padding-bottom: calc(var(--nav-bottom) + env(safe-area-inset-bottom, 0px)); }
-  body:has(.mini.is-visible) { padding-bottom: calc(var(--nav-bottom) + var(--mini-h) + env(safe-area-inset-bottom, 0px)); }
-
-  /* The header scrolls away with the page, so articles get the whole screen. The bottom bar stays. */
+  /* The header scrolls away with the page, so articles get the whole screen.
+     The navigation itself is the three glass pieces of PhoneNav, at the bottom of the screen. */
   .nav__frame { position: absolute; }
   .nav__row { justify-content: space-between; gap: 1rem; }
   .nav__bg { border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
   .nav__recess { display: none; }
   .nav__mark { font-size: 1.7rem; }
-
-  /* Five slots: Home, Live TV, Radio, News and More. Icons only: a label under the glass lens came out bent. */
-  .nav__track {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100;
-    flex: none;
-    height: calc(var(--nav-bottom) + env(safe-area-inset-bottom, 0px));
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    background: var(--nav-base);
-    box-shadow: 0 -4px 18px rgba(4, 10, 36, 0.25);
-  }
-  .nav__cell { height: var(--nav-bottom); }
-  .nav__cell--secondary { display: none; }
-  .nav__cell--more { display: block; }
-  .nav__item .nav__label { display: none; }
-
-  /* The news categories panel belongs to the desktop. On a phone, News goes straight to the News page. */
-  .newsmenu__chev,
-  .newsmenu__panel { display: none; }
-
-  /* The More sheet opens just above the bottom bar */
-  .nav__sheet {
-    position: absolute;
-    right: 8px;
-    bottom: calc(100% + 8px);
-    z-index: 5;
-    display: grid;
-    width: min(260px, calc(100vw - 16px));
-    padding: 0.4rem;
-    border-radius: var(--radius-lg);
-    background: var(--nav-base);
-    box-shadow: var(--shadow-lg);
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(8px);
-    transition: opacity 0.2s ease, transform 0.25s var(--ease), visibility 0s linear 0.25s;
-  }
-  .nav__sheet.is-open { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
-  .nav__sheetlink {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    min-height: 48px;
-    padding: 0 0.9rem;
-    border-radius: var(--radius-md);
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 600;
-  }
-  .nav__sheetlink:hover,
-  .nav__sheetlink.active { background: rgba(255, 255, 255, 0.1); color: var(--white); }
-
-  /* The mini-player docks above the bottom bar as a slim strip, so the fixed pieces stack neatly.
-     It sits below the bar's layer, so the More sheet always opens on top of it. */
-  body .mini.lg {
-    z-index: 90;
-    left: 0;
-    right: 0;
-    width: auto;
-    bottom: calc(var(--nav-bottom) + env(safe-area-inset-bottom, 0px));
-    border-radius: 0 !important;
-    background: var(--nav-base);
-    box-shadow: 0 -2px 12px rgba(4, 10, 36, 0.25);
-  }
-  .mini.lg .lg__backdrop,
-  .mini.lg .lg__sheen { display: none; }
-  .mini__row { padding: 0.4rem 0.6rem 0.4rem 0.5rem; }
-  .mini__video { width: 76px; height: 44px; margin-right: 0.4rem; border-radius: var(--radius-sm); }
+  .nav__track { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

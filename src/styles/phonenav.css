@@ -1,0 +1,151 @@
+/* ---------- The phone navigation: three pieces of glass ----------
+   Home (circle) | News, Live TV, Radio (capsule) | More (circle). Phone and small screens only.
+   The pieces share no background, rail or container, and there is a gap between each. */
+
+.phonenav { display: none; }
+
+@media (max-width: 860px) {
+  :root {
+    --pn-size: 56px; /* the height of every piece, and the width of the circles */
+    --pn-gap: 10px;
+    --pn-bottom: 14px; /* how far the pieces float above the bottom edge */
+  }
+
+  /* Room at the bottom of every page for the pieces, and for the mini-player above them while it shows */
+  body { padding-bottom: calc(var(--pn-bottom) + var(--pn-size) + 22px + env(safe-area-inset-bottom, 0px)); }
+  body:has(.mini.is-visible) { padding-bottom: calc(var(--pn-bottom) + var(--pn-size) + var(--mini-h, 52px) + 34px + env(safe-area-inset-bottom, 0px)); }
+
+  .phonenav {
+    --pn-ink: #fff;
+    --pn-halo: rgba(0, 10, 40, 0.4);
+    position: fixed;
+    z-index: 100;
+    left: 0;
+    right: 0;
+    bottom: calc(var(--pn-bottom) + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--pn-gap);
+    padding: 0 12px;
+    pointer-events: none; /* only the pieces take touches, never the space between them */
+    will-change: transform;
+    /* One move for all three pieces, so none can lag behind the others */
+    transition: transform 0.5s cubic-bezier(0.32, 0.72, 0.18, 1);
+  }
+  .phonenav[data-tone="light"] {
+    --pn-ink: #0a1a3a;
+    --pn-halo: rgba(255, 255, 255, 0.6);
+  }
+  /* Slides down until it is fully off the screen, shadow included */
+  .phonenav.is-hidden { transform: translateY(calc(100% + var(--pn-bottom) + env(safe-area-inset-bottom, 0px) + 32px)); }
+
+  .phonenav .phonenav__piece,
+  .phonenav .phonenav__menu { pointer-events: auto; }
+
+  .phonenav .phonenav__piece {
+    height: var(--pn-size);
+    color: var(--pn-ink);
+    outline: 1px solid transparent;
+    outline-offset: -1px;
+    transition: color 0.35s ease, outline-color 0.35s ease;
+  }
+  .phonenav .phonenav__round { flex: none; width: var(--pn-size); }
+  .phonenav .phonenav__capsule { flex: 0 1 232px; min-width: 0; }
+  .phonenav .phonenav__piece > .lg__content { display: flex; width: 100%; height: 100%; align-items: center; justify-content: space-around; }
+
+  /* A clean edge: a hairline and a small highlight, with no white glow spreading in from the rim */
+  .phonenav .lg__sheen {
+    box-shadow:
+      inset 0 1px 1px rgba(255, 255, 255, 0.4),
+      inset 0 -1px 1px rgba(255, 255, 255, 0.14),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+  .phonenav .lg--css .lg__sheen { background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0) 50%); }
+
+  /* Clear glass over a light page has hardly any edge, so it gets a thin one */
+  .phonenav[data-tone="light"] .phonenav__piece { outline-color: rgba(10, 26, 58, 0.14); }
+
+  .phonenav__link {
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    min-width: 44px;
+    padding: 0;
+    border: 0;
+    border-radius: 999px;
+    background: none;
+    color: inherit;
+    opacity: 0.7;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: opacity 0.3s ease, transform 0.3s var(--ease);
+  }
+  .phonenav__link svg { filter: drop-shadow(0 0 2px var(--pn-halo)); }
+  /* The page you are on: full strength and a filled icon. Nothing is drawn around it. */
+  .phonenav__link.is-active { opacity: 1; }
+  .phonenav__link:active { transform: scale(0.92); }
+  .phonenav__link:focus-visible { outline: 2px solid currentColor; outline-offset: -6px; }
+
+  /* The More menu opens just above its button */
+  .phonenav__more { position: relative; flex: none; }
+  .phonenav .phonenav__menu {
+    position: absolute;
+    right: 0;
+    bottom: calc(100% + 12px);
+    display: grid;
+    width: min(250px, calc(100vw - 24px));
+    padding: 0.4rem;
+    color: #fff;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(10px) scale(0.96);
+    transform-origin: bottom right;
+    transition: opacity 0.2s ease, transform 0.3s var(--ease), visibility 0s linear 0.3s;
+  }
+  .phonenav .phonenav__menu.is-open { opacity: 1; visibility: visible; pointer-events: auto; transform: none; transition-delay: 0s; }
+  /* The menu has writing in it, so it carries a deep navy tint and the writing is always white */
+  .phonenav .phonenav__menu .lg__sheen,
+  .phonenav .phonenav__menu.lg--css .lg__sheen { background: rgba(10, 23, 71, 0.86); }
+  .phonenav__menuitem {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    min-height: 48px;
+    padding: 0 0.9rem;
+    border-radius: 20px;
+    color: rgba(255, 255, 255, 0.82);
+    font-weight: 600;
+  }
+  .phonenav__menuitem:hover,
+  .phonenav__menuitem.is-active { background: rgba(255, 255, 255, 0.12); color: #fff; }
+  .phonenav__menuitem:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
+
+  /* The mini-player floats just above the pieces as a rounded pill, and drops to the bottom when they slide away */
+  body .mini.lg {
+    z-index: 95;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    bottom: calc(var(--pn-bottom) + var(--pn-size) + 12px + env(safe-area-inset-bottom, 0px));
+    transition: transform 0.55s var(--lg-spring, cubic-bezier(0.34, 1.56, 0.64, 1)), bottom 0.5s cubic-bezier(0.32, 0.72, 0.18, 1), visibility 0s linear 0.55s;
+  }
+  html[data-phonenav="hidden"] body .mini.lg { bottom: calc(var(--pn-bottom) + env(safe-area-inset-bottom, 0px)); }
+  /* Its writing is always white, so the glass carries a deep navy tint */
+  .mini.lg .lg__sheen { background: rgba(10, 23, 71, 0.8); }
+  .mini__row { padding: 0.4rem 0.6rem 0.4rem 0.5rem; }
+  .mini__video { width: 76px; height: 44px; margin-right: 0.4rem; border-radius: 40px 14px 14px 40px; }
+}
+
+@media (max-width: 860px) and (prefers-reduced-motion: reduce) {
+  /* No sliding: it just fades, and cannot be touched while it is gone */
+  .phonenav { transition: opacity 0.25s linear; }
+  .phonenav.is-hidden { transform: none; opacity: 0; }
+  .phonenav.is-hidden > * { pointer-events: none; }
+  .phonenav .phonenav__menu { transition: opacity 0.15s linear; transform: none; }
+  body .mini.lg { transition: none; }
+}

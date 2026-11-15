@@ -31,7 +31,7 @@ function brightness({ r, g, b }) {
 // The tone of the first thing that tells us, going down through the stack of elements at one point
 export function toneFromElements(elements) {
   for (const el of elements) {
-    if (el.closest(".mini, .nav, dialog")) continue;
+    if (el.closest(".mini, .nav, .phonenav, dialog")) continue;
     const hint = el.closest("[data-tone]");
     if (hint) return hint.dataset.tone === "dark" ? "dark" : "light";
     const color = parseColor(getComputedStyle(el).backgroundColor);
