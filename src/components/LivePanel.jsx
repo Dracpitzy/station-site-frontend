@@ -5,6 +5,7 @@ import { timeLeft } from "../lib/timeLeft";
 import { useOnAir } from "../hooks/useOnAir";
 import { tvPlayer, useTvPlayer } from "../player/tv";
 import { useHandOffWhenOffscreen } from "../hooks/useHandOff";
+import RadioPills from "./RadioPills";
 import { hostNames } from "../data/schedule";
 import { photoProps } from "../data/images";
 import { preloadProps } from "../routes";
@@ -101,10 +102,13 @@ export default function LivePanel() {
       </div>
 
       <div className="livepanel__info">
-        <p className="livepanel__kicker">
-          <span className="live-dot" />
-          On air now on ITV
-        </p>
+        <div className="livepanel__top">
+          <p className="livepanel__kicker">
+            <span className="live-dot" />
+            On air now on ITV
+          </p>
+          <RadioPills label="Listen live" />
+        </div>
         <h2>{current.title}</h2>
         <p className="livepanel__time">
           {current.startLabel} to {current.endLabel}

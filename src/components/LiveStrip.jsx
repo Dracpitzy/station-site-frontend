@@ -4,6 +4,7 @@ import { Icon } from "./Icons";
 import { useOnAir } from "../hooks/useOnAir";
 import { tvPlayer, useTvPlayer } from "../player/tv";
 import { useHandOffWhenOffscreen } from "../hooks/useHandOff";
+import RadioPills from "./RadioPills";
 import { photoProps } from "../data/images";
 import { preloadProps } from "../routes";
 import "../styles/livestrip.css";
@@ -99,6 +100,10 @@ export default function LiveStrip() {
       </div>
 
       {open && <StripPlayer />}
+
+      <div className="livestrip__radio">
+        <RadioPills inline label="Listen live" />
+      </div>
     </section>
   );
 }

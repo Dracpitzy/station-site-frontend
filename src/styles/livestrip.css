@@ -63,3 +63,8 @@
   font-weight: 700;
 }
 .livestrip__page { margin-left: auto; padding: 0.6rem 0.3rem; color: rgba(255, 255, 255, 0.85); font-size: 0.85rem; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+/* The two live radios, under the TV bar */
+.livestrip__radio { padding: 0.65rem 0.9rem 0.85rem; border-top: 1px solid rgba(255, 255, 255, 0.14); }
+.livestrip__radio .rpills { align-items: stretch; }
+.livestrip__radio .rpills__head { justify-content: space-between; }

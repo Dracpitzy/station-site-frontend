@@ -1,0 +1,86 @@
+/* ---------- The live radio buttons: Abuja and Benin ---------- */
+.rpills { position: relative; display: flex; flex-direction: column; align-items: flex-end; gap: 0.6rem; min-width: 0; }
+.rpills__head { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 0.5rem 0.8rem; }
+.rpills__label { color: rgba(255, 255, 255, 0.72); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; }
+.rpills__row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.rpill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-height: 40px;
+  padding: 0.28rem 0.95rem 0.28rem 0.28rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.rpill:hover { background: rgba(255, 255, 255, 0.22); }
+.rpill:active { transform: scale(0.97); }
+.rpill:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.rpill__icon { display: grid; flex: none; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: rgba(255, 255, 255, 0.22); transition: background 0.2s ease, color 0.2s ease; }
+.rpill__text { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 0.45rem; min-width: 0; }
+.rpill__name { font-size: 0.88rem; font-weight: 700; }
+.rpill__freq { font-size: 0.76rem; font-weight: 600; opacity: 0.78; }
+.rpill__status { flex-basis: 100%; font-size: 0.72rem; font-weight: 600; opacity: 0.7; }
+
+/* Playing: a white pill with a dark icon */
+.rpill.is-playing { border-color: #fff; background: #fff; color: var(--navy); }
+.rpill.is-playing .rpill__icon { background: var(--navy); color: #fff; }
+
+/* Off the air: quieter, with a dashed edge, and its frequency blurred out */
+.rpill.is-down { border-style: dashed; background: rgba(255, 255, 255, 0.07); }
+.rpill.is-down .rpill__icon { background: rgba(255, 255, 255, 0.1); color: rgba(255, 255, 255, 0.7); }
+.rpill.is-down .rpill__name { opacity: 0.85; }
+.is-blurred { filter: blur(4.5px); opacity: 0.8; pointer-events: none; user-select: none; }
+
+/* Cards, on the Radio page */
+.rpills--cards { align-items: stretch; }
+.rpills--cards .rpills__head { justify-content: flex-start; }
+.rpills--cards .rpills__row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; width: 100%; }
+.rpills--cards .rpills__head { width: 100%; flex-direction: column; align-items: flex-start; }
+.rpills--cards .rpill { align-items: center; gap: 0.9rem; min-height: 76px; padding: 0.7rem 1.1rem 0.7rem 0.7rem; border-radius: 22px; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); }
+.rpills--cards .rpill__icon { width: 46px; height: 46px; }
+.rpills--cards .rpill__name { font-size: 1.02rem; }
+.rpills--cards .rpill__freq { font-size: 0.86rem; }
+
+/* The message for a station that is off the air */
+.rnotice {
+  position: absolute;
+  z-index: 6;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  display: flex;
+  gap: 0.8rem;
+  width: min(330px, 86vw);
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 18px;
+  background: rgba(6, 18, 58, 0.96);
+  box-shadow: 0 18px 40px rgba(2, 8, 30, 0.5);
+  color: #fff;
+  text-align: left;
+  animation: rnotice-in 0.25s ease;
+}
+.rpills.is-inline .rnotice,
+.rpills--cards .rnotice { position: static; width: auto; box-shadow: none; }
+.rnotice__icon { display: grid; flex: none; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(255, 255, 255, 0.12); }
+.rnotice__body { display: grid; gap: 0.3rem; min-width: 0; }
+.rnotice__body strong { font-size: 0.95rem; line-height: 1.25; }
+.rnotice__body p { color: rgba(255, 255, 255, 0.78); font-size: 0.82rem; line-height: 1.4; }
+.rnotice__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem 0.9rem; margin-top: 0.3rem; }
+.rnotice__btn { padding: 0.45rem 0.95rem; border: 0; border-radius: 999px; background: #fff; color: var(--navy); font: inherit; font-size: 0.82rem; font-weight: 700; cursor: pointer; }
+.rnotice__close { padding: 0.3rem 0.2rem; border: 0; background: none; color: rgba(255, 255, 255, 0.8); font: inherit; font-size: 0.82rem; font-weight: 600; cursor: pointer; }
+.rnotice__btn:focus-visible,
+.rnotice__close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+@keyframes rnotice-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .rnotice { animation: none; } .rpill, .rpill__icon { transition: none; } }
+
+@media (max-width: 520px) {
+  .rpills--cards .rpills__row { grid-template-columns: 1fr; }
+}

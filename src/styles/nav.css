@@ -51,8 +51,9 @@ main .page-pad { padding-top: var(--space-7); }
 
 /* Logo */
 .nav__logo { flex: none; display: flex; align-items: center; gap: 0.7rem; }
-/* The ITV logo (the version with white letters, for the dark navigation) */
-.nav__mark { display: block; width: auto; height: 44px; }
+/* The ITV logo in its own colours, on a white disc so the blue letters stand out against the navy */
+.nav__disc { display: grid; flex: none; place-items: center; width: 58px; height: 58px; border-radius: 50%; background: #fff; box-shadow: 0 2px 10px rgba(2, 8, 30, 0.35); }
+.nav__mark { display: block; width: 47px; height: auto; }
 .nav__sub {
   font-size: 0.68rem;
   font-weight: 600;
@@ -174,8 +175,9 @@ main .page-pad { padding-top: var(--space-7); }
   margin: 0;
   padding: 10px 5px;
 }
-.nav[data-layout="rail"] .nav__logo { height: 36px; align-items: center; justify-content: center; }
-.nav[data-layout="rail"] .nav__mark { height: 28px; }
+.nav[data-layout="rail"] .nav__logo { height: 44px; align-items: center; justify-content: center; }
+.nav[data-layout="rail"] .nav__disc { width: 44px; height: 44px; }
+.nav[data-layout="rail"] .nav__mark { width: 35px; }
 .nav[data-layout="rail"] .nav__sub { display: none; }
 
 .nav[data-layout="rail"] .nav__track { flex: 1; width: 36px; height: auto; min-height: 0; flex-direction: column; }
@@ -240,7 +242,8 @@ main .page-pad { padding-top: var(--space-7); }
   .nav__row { justify-content: space-between; gap: 1rem; }
   .nav__bg { border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
   .nav__recess { display: none; }
-  .nav__mark { height: 38px; }
+  .nav__disc { width: 46px; height: 46px; }
+  .nav__mark { width: 37px; }
   .nav__track { display: none; }
 }
 

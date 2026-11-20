@@ -5,6 +5,7 @@ import { useOnAir } from "../hooks/useOnAir";
 import { tvPlayer, useTvPlayer } from "../player/tv";
 import { radioPlayer, useRadioPlayer } from "../player/radio";
 import { photoProps } from "../data/images";
+import { radioStations } from "../data/config";
 import { LiquidGlass } from "./liquid-glass/LiquidGlass";
 import { Icon } from "./Icons";
 import "../styles/player.css";
@@ -62,6 +63,7 @@ export default function MiniPlayer() {
     ? RADIO_ACTIVE.includes(radio.status)
     : tv.status === "playing" || tv.status === "buffering";
   const title = radioMode ? onAir.radio.current.title : onAir.tv.current.title;
+  const radioName = (radioStations.find((s) => s.id === radio.stationId) || radioStations[0]).name;
 
   return (
     <LiquidGlass
@@ -84,7 +86,7 @@ export default function MiniPlayer() {
         <Link to={radioMode ? "/radio" : "/live"} className="mini__info">
           <span className="mini__live">
             <span className="live-dot" />
-            {radioMode ? "LIVE RADIO" : "LIVE"}
+            {radioMode ? `LIVE RADIO · ${radioName.toUpperCase()}` : "LIVE"}
           </span>
           <strong>{title}</strong>
         </Link>

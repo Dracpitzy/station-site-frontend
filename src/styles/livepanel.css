@@ -95,6 +95,7 @@
 
 /* What is on air */
 .livepanel__info { display: grid; align-content: center; gap: 0.55rem; min-width: 0; padding: 1.5rem 2rem; }
+.livepanel__top { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 0.7rem 1rem; }
 .livepanel__kicker {
   display: flex;
   align-items: center;

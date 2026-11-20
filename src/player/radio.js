@@ -1,5 +1,5 @@
 import { useSyncExternalStore } from "react";
-import { station, streams } from "../data/config.js";
+import { station, radioStations } from "../data/config.js";
 import { getOnAir, stationClock } from "../data/schedule.js";
 import { photoProps } from "../data/images.js";
 import { claim, register, release } from "./channels.js";
@@ -15,8 +15,9 @@ const META_REFRESH_MS = 60000;
 const clamp01 = (n) => Math.min(1, Math.max(0, Number.isFinite(n) ? n : 1));
 const isHls = (url) => /\.m3u8(\?|#|$)/i.test(url);
 
-// The stream can be one link or a list. The list is tried in order, so a second link is a backup.
-const sources = () => [].concat(streams.radio).filter(Boolean);
+// The station being listened to. Its stream can be one link or a list. The list is tried in order, so a second link is a backup.
+const current = () => radioStations.find((s) => s.id === state.stationId) || radioStations[0];
+const sources = () => [].concat(current().streams).filter(Boolean);
 
 function loadPrefs() {
   try {
@@ -50,6 +51,7 @@ let state = {
   session: false, // the visitor has pressed play and has not closed the player
   started: false, // sound has played in this session
   playing: false,
+  stationId: (radioStations.find((s) => s.live) || radioStations[0]).id, // which radio is selected
   ...loadPrefs(),
 };
 
@@ -206,7 +208,7 @@ function syncMediaSession() {
   const art = photoProps("radio", [256, 512, 1024]);
   navigator.mediaSession.metadata = new MediaMetadata({
     title: show.title,
-    artist: `${station.name} Radio ${station.frequency}`,
+    artist: `${station.name} Radio ${current().name} ${current().frequency}`.trim(),
     album: "Live radio",
     artwork: [{ src: art.src, sizes: "512x512" }],
   });
@@ -307,6 +309,20 @@ function toggle() {
   else audio.pause();
 }
 
+// Play a station by name. Tapping the one that is already selected plays or pauses it.
+// Returns false for a station that is off the air, so the page can say so.
+function play(id) {
+  const target = radioStations.find((s) => s.id === id);
+  if (!target || !target.live) return false;
+  if (target.id === state.stationId) {
+    toggle();
+    return true;
+  }
+  set({ stationId: target.id });
+  begin(); // loads the new station's stream in place of the old one
+  return true;
+}
+
 function stop() {
   startToken++;
   destroyHls();
@@ -349,6 +365,7 @@ register("radio", stop);
 
 export const radioPlayer = {
   toggle,
+  play,
   start: begin,
   stop,
   retry: begin,

@@ -4,9 +4,10 @@ import { useOnAir } from "../hooks/useOnAir";
 import { useDarkNavSection } from "../hooks/useNavTheme";
 import { radioPlayer, useRadioPlayer } from "../player/radio";
 import { getDaySchedule, hostNames } from "../data/schedule";
-import { station } from "../data/config";
+import { radioStations } from "../data/config";
 import { photoProps } from "../data/images";
 import { Icon } from "../components/Icons";
+import RadioPills from "../components/RadioPills";
 import { timeLeft } from "../lib/timeLeft";
 import "../styles/player.css";
 import "../styles/radio.css";
@@ -33,6 +34,7 @@ export default function Radio() {
   const cover = photoProps("radio", [480, 800, 1280]);
   const today = getDaySchedule("radio", day);
   const silent = player.muted || player.volume === 0;
+  const selected = radioStations.find((s) => s.id === player.stationId) || radioStations[0];
 
   return (
     <section className="tvpage radiopage" ref={sectionRef}>
@@ -43,10 +45,14 @@ export default function Radio() {
         <header className="radiopage__head">
           <p className="tvpage__label radiopage__tag">
             <span className="live-dot" />
-            Radio {station.frequency}
+            {selected.fullName} {selected.frequency}
           </p>
           <h1>Listen live</h1>
         </header>
+
+        <div className="radiopage__stations">
+          <RadioPills variant="cards" label="Choose a station" />
+        </div>
 
         <div className={`rplayer${status === "playing" ? " is-playing" : ""}`}>
           <div className="rplayer__body">

@@ -34,7 +34,9 @@ export default function Footer() {
     <footer className="footer" data-tone="dark">
       <div className="container footer__grid">
         <div className="footer__brand">
-          <img className="footer__logo" src="/logo-light.png" alt={station.name} width="136" height="72" loading="lazy" decoding="async" />
+          <span className="footer__disc">
+            <img className="footer__logo" src="/logo.png" alt={station.name} width="100" height="53" loading="lazy" decoding="async" />
+          </span>
           <p>{station.fullName}</p>
           <p>{station.tagline}</p>
           <p className="footer__freq">

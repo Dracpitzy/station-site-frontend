@@ -41,7 +41,8 @@ main { min-height: 70vh; }
   grid-template-columns: 1.5fr 1fr 1fr 1fr 1.3fr;
   gap: var(--space-6);
 }
-.footer__logo { display: block; width: auto; height: 72px; margin-bottom: var(--space-3); }
+.footer__disc { display: grid; place-items: center; width: 128px; height: 128px; margin-bottom: var(--space-3); border-radius: 50%; background: #fff; box-shadow: 0 6px 22px rgba(0, 0, 0, 0.35); }
+.footer__logo { display: block; width: 100px; height: auto; }
 .footer__brand p { opacity: 0.75; max-width: 32ch; }
 .footer__brand .footer__freq {
   display: inline-flex;
