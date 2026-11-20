@@ -36,3 +36,16 @@ export const radioStations = [
     live: false,
   },
 ];
+
+// The breaking news strip on the front page.
+//   windowMinutes: a story stays in the strip this long after it was flagged as breaking (its breaking_at time).
+//                  When every story has passed this, the strip folds away until a new one is flagged.
+//   rotateMs:      how long each headline shows before the next one slides in.
+//   recheckMs:     how often the strip checks which stories have expired.
+//   pollMs:        how often it asks the API for newly flagged stories (only when VITE_API_URL is set).
+export const breaking = {
+  windowMinutes: 120,
+  rotateMs: 5000,
+  recheckMs: 15000,
+  pollMs: 60000,
+};

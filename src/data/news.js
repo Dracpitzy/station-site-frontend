@@ -3,6 +3,9 @@
 //
 // photo: a key from data/images.js. Stories without one get a designed cover for their category.
 // Swap in a real photo later by adding a photo to images.js and naming it here.
+//
+// breaking: true flags a story for the breaking news strip. It is flagged breakingAgo minutes before the page loads
+// (the same as `ago` when left out) and drops out of the strip two hours after that. Stories flagged here are demo only.
 
 export const categories = [
   { slug: "politics", name: "Politics" },
@@ -39,7 +42,7 @@ const RAW = [
   story("assembly-passes-budget", "politics", "Assembly passes next year's budget after marathon night session",
     "Lawmakers approved the spending plan after hours of debate over capital projects.", 14, 9400, { breaking: true }),
   story("governors-road-repair-plan", "politics", "Governors agree joint plan to speed up local road repairs",
-    "States will pool resources to fix major routes before the rainy season ends.", 95, 4300),
+    "States will pool resources to fix major routes before the rainy season ends.", 95, 4300, { breaking: true }),
   story("electoral-body-revised-timetable", "politics", "Electoral body publishes revised timetable for off-cycle polls",
     "Candidates have a fresh deadline to submit their nomination papers.", 210, 3800),
   story("lawmakers-question-agencies", "politics", "Lawmakers question agencies over unspent capital allocations",
@@ -47,7 +50,7 @@ const RAW = [
 
   // Business
   story("naira-steadies-importers-return", "business", "Naira steadies as importers return to the foreign exchange market",
-    "Traders say improved supply has calmed prices after weeks of volatility.", 40, 12100, { readMins: 5 }),
+    "Traders say improved supply has calmed prices after weeks of volatility.", 40, 12100, { breaking: true, readMins: 5 }),
   story("small-business-loan-window", "business", "Small businesses queue for new low-interest loan window",
     "Thousands applied on the first day as the programme opened to traders and artisans.", 130, 4700),
   story("fuel-depot-supply-warning", "business", "Fuel depot owners warn of supply gaps ahead of the holidays",
@@ -135,13 +138,13 @@ const BOOT = Date.now();
 export const articles = RAW.map((s) => ({
   ...s,
   published: BOOT - s.ago * 60000,
+  breakingAt: s.breaking ? BOOT - (s.breakingAgo ?? s.ago) * 60000 : undefined,
   readMins: s.readMins ?? 3,
 }));
 
 export const getArticle = (id) => articles.find((a) => a.id === id);
 export const categoryName = (slug) => categories.find((c) => c.slug === slug)?.name ?? slug;
 export const leadStory = articles.find((a) => a.lead);
-export const breakingStory = articles.find((a) => a.breaking);
 
 export const latest = (n, exclude = []) =>
   [...articles].filter((a) => !exclude.includes(a.id)).sort((a, b) => b.published - a.published).slice(0, n);

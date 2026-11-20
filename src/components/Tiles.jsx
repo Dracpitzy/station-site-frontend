@@ -17,12 +17,12 @@ function Meta({ story, readTime = false }) {
 }
 
 // The big one. size="lead" is the main story of the page, size="feature" is the leader of a category.
-export function LeadTile({ story, size = "lead" }) {
+export function LeadTile({ story, size = "lead", eager = size === "lead" }) {
   return (
     <Link to={articleLink(story)} className={`tile tile--${size}`}>
       <Cover
         story={story}
-        eager={size === "lead"}
+        eager={eager}
         sizes={size === "lead" ? "(max-width: 900px) 100vw, 760px" : "(max-width: 900px) 100vw, 640px"}
         className="tile__img"
       />

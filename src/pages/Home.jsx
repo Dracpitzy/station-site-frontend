@@ -1,32 +1,31 @@
 import { Link } from "react-router-dom";
+import BreakingStrip from "../components/BreakingStrip";
 import LivePanel from "../components/LivePanel";
 import LiveStrip from "../components/LiveStrip";
 import RadioBand from "../components/RadioBand";
 import VideoSection from "../components/VideoSection";
-import { GridTile, LeadTile, RowTile, SideTile } from "../components/Tiles";
+import { GridTile, LeadTile, RowTile } from "../components/Tiles";
 import { BlockHead } from "../components/StoryCards";
 import { articleLink } from "../lib/articleLink";
 import { useIsPhone } from "../hooks/useIsPhone";
 import {
-  breakingStory,
   categoryName,
   inCategory,
   latest,
   leadStory,
   popular,
-  timeAgo,
 } from "../data/news";
 import "../styles/home.css";
 
-// Every story is shown once on the front page. Whatever one section takes is kept out of the next,
-// and the breaking story appears only in the breaking strip.
-const shown = new Set([leadStory.id, breakingStory?.id].filter(Boolean));
+// Every story is shown once in the sections of the front page. Whatever one section takes is kept out of the next.
+// A story that is breaking also appears in the breaking strip, and stays in its category after the strip drops it.
+const shown = new Set([leadStory.id]);
 const pick = (stories) => {
   stories.forEach((s) => shown.add(s.id));
   return stories;
 };
 
-const secondary = pick(latest(2, [...shown]));
+const topList = pick(latest(4, [...shown])); // the "Latest news" list beside the lead
 const latestSix = pick(latest(6, [...shown]));
 
 // Each category gets its own arrangement, so the page does not repeat one grid four times.
@@ -36,20 +35,6 @@ const SECTIONS = [
   { slug: "sports", layout: "feature-flip", count: 4 },
   { slug: "entertainment", layout: "quad", count: 4 },
 ].map((s) => ({ ...s, stories: pick(inCategory(s.slug, s.count, [...shown])) }));
-
-// A slim red strip, only while there is a breaking story
-function BreakingStrip({ story }) {
-  return (
-    <Link to={articleLink(story)} className="breakbar">
-      <span className="breakbar__tag">
-        <span className="live-dot" />
-        Breaking news
-      </span>
-      <strong className="breakbar__text">{story.title}</strong>
-      <span className="breakbar__time">{timeAgo(story.published)}</span>
-    </Link>
-  );
-}
 
 function CategorySection({ slug, layout, stories, phone }) {
   if (!stories.length) return null;
@@ -144,7 +129,7 @@ export default function Home() {
 
       <div className="container hmain">
         {phone ? <LiveStrip /> : <LivePanel />}
-        {breakingStory && <BreakingStrip story={breakingStory} />}
+        <BreakingStrip />
 
         {phone ? (
           <section className="top" aria-label="Top story">
@@ -152,23 +137,26 @@ export default function Home() {
           </section>
         ) : (
           <section className="top" aria-label="Top stories">
-            <LeadTile story={leadStory} />
-            <div className="top__side">
-              {secondary.map((s) => (
-                <SideTile key={s.id} story={s} />
-              ))}
+            <LeadTile story={leadStory} size="feature" eager />
+            <div className="top__latest">
+              <BlockHead>Latest news</BlockHead>
+              <div className="rows">
+                {topList.map((s) => (
+                  <RowTile key={s.id} story={s} />
+                ))}
+              </div>
             </div>
           </section>
         )}
 
         <section className="hsec">
           <BlockHead to="/news" label="View all news">
-            Latest news
+            {phone ? "Latest news" : "More news"}
           </BlockHead>
           {phone ? (
-            // On a phone the two stories that sit beside the lead on a wide screen head the list instead
+            // On a phone the newest stories that sit beside the lead on a wide screen head the list instead
             <div className="rows rows--latest">
-              {[...secondary, ...latestSix].map((s) => (
+              {[...topList, ...latestSix].slice(0, 8).map((s) => (
                 <RowTile key={s.id} story={s} />
               ))}
             </div>
